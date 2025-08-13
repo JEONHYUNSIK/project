@@ -1,0 +1,71 @@
+.item-buy-form {
+    max-width: 800px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 20px; /* 패딩 추가 */
+    border: 1px solid #f8c300; /* 테두리 추가 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    background-color: #ffcc01; /* 배경색 */
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #014fea;
+    margin-left: 35%;
+    padding: 10px; /* 패딩을 줄임 */
+}
+
+.item-buy-container {
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    padding: 15px; /* 패딩을 줄임 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 20px; /* 폰트 크기를 줄임 */
+    margin: 0;
+}
+
+.new {
+    color: red;
+    font-weight: bold;
+}
+
+.information {
+    font-size: 14px; 
+    margin: 5px 0; 
+}
+
+.price, .vip-price {
+    font-size: 16px; /* 폰트 크기를 줄임 */
+    margin: 3px 0; /* 마진을 줄임 */
+}
+
+.options {
+    margin: 15px 0; 
+}
+
+.color-selection, .size-selection {
+    margin-bottom: 5px; /* 마진을 줄임 */
+}
+
+.buttons {
+    display: flex;
+    gap: 8px; 
+}
+
+.btn{
+    padding: 8px 12px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#add-to-cart {
+    background-color: #007bff;
+    color: white;
+}
+
+#buy-now {
+    background-color: #28a745;
+    color: white;
+}

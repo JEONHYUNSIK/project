@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 및 이용약관</title>
+    <link rel="stylesheet" href="/resources/css/signup.css">
+    <link rel="stylesheet" href="/resources/css/index.css">
+    <!-- 부트스트랩 추가-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+
+<body>
+     <!-- 버튼 시작 -->
+     <div id="goingTop" onclick="window.scrollTo(0,0);"><img src="/resources/images/upupup.png"></div>
+     <!-- 버튼 끝 -->
+    <!-- 헤더 시작 -->
+    <div id="header_wrap">
+        <div id="navbar2">
+            <div class="spacer"></div>
+        </div>
+
+        <div id="navbar">
+            <a href="/html/index/index.html" id="logo">
+                <img src="/resources/images/petshop.png" alt="로고">
+            </a>
+            <div id="b_me_wrap">
+                <ul id="menu_wrap">
+                    <li><a href="/html/index/index.html"><b>홈</b></a></li>
+                    <li>
+                        <a href="#"><b>게시판</b></a>
+                        <ul id="de_menu1" class="de_menu_bg">
+                            <li><a href="/html/post/post.html"><b>공지사항</b></a></li>
+                            <li><a href="/html/post/boder.html"><b>자유게시판</b></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><b>제품소개</b></a>
+                        <ul id="de_menu2" class="de_menu_bg">
+                            <li><a href="/html/item/item.html"><b>의류/악세서리</b></a></li>
+                            <li><a href="/html/snack/snack.html"><b>간식/사료</b></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- 메뉴랩 끝 -->
+
+            <div id="icon_wrap">
+                <a href="#" title="찾기">
+                    <i class="bi bi-search" id="i_search"></i>
+                </a>
+                <a href="/html/cart/cart.html" title="장바구니">
+                    <i class="bi bi-cart-plus"></i>
+                </a>
+                <a href="/html/login/login.html" title="마이페이지">
+                    <i class="bi bi-person-fill"></i>
+                </a>
+            </div>
+            <!-- 아이콘 랩 끝 -->
+        </div>
+        <!-- 중요 헤더 끝 -->
+
+    </div>
+    <!-- 헤더 랩 끝 -->
+
+    <!-- 헤더의 search -->
+    <div id="search_box">
+        <form action="/html/item/item.html" method="get" name="search_item" role="search">
+            <div id="s_wrap">
+                <input type="search" id="pc_search" name="search_name" class="pc_search_bar" placeholder="찾는 물건을 입력하세요.">
+                <button type="submit" id="pc_search_ic">검색</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 헤더의 search 끝! -->
+    <!-- 헤더는여기서 끄읕~~ 나머지는 홈! -->
+
+    <!-- *******************************헤더/네비게이션 끝**************************** -->
+
+    <!-- signup -->
+    <main>
+        <article class="use_book">
+            <h2>이용약관</h2>
+            <textarea name="이용약관" id="agree" readonly title="이용약관">제1조(목적)
+
+                펫# 이용약관
+
+                제1조(목적)
+                
+                이 약관은 펫# (이하 "몰"이라 한다)에서 제공하는 반려동물 간식 및 제품(이하 "상품"이라 한다) 판매 서비스(이하 "서비스"라 한다)의 이용에 관한 권리·의무 및 책임사항을 규정함을 목적으로 합니다.
+                
+                제2조(정의)
+                
+                ① "몰"이란 펫#이 운영하는 온라인 반려동물 간식 및 제품 판매 사이트를 의미합니다.
+                
+                ② "이용자"란 "몰"에 접속하여 이 약관에 따라 서비스를 받는 회원 및 비회원을 말합니다.
+                
+                ③ ‘회원’은 "몰"에 회원등록을 한 자로서, "몰"의 정보를 지속적으로 제공받으며 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
+                
+                ④ ‘비회원’은 회원에 가입하지 않고 "몰"이 제공하는 서비스를 이용하는 자를 말합니다.
+                
+                제3조(약관의 명시와 설명 및 개정)
+                
+                ① "몰"은 이 약관의 내용을 서비스 초기 화면에 게시합니다.
+                
+                ② "몰"은 이용자가 약관에 동의하기에 앞서 청약철회, 배송책임, 환불조건 등 중요한 내용을 이해할 수 있도록 별도의 화면을 제공합니다.
+                
+                ③ "몰"은 관련법을 위배하지 않는 범위에서 이 약관을 개정할 수 있으며, 개정 시 이용자에게 사전 공지합니다.
+                
+                제4조(서비스의 제공 및 변경)
+                
+                ① "몰"은 다음과 같은 업무를 수행합니다.
+                
+                반려동물 간식 및 제품 정보 제공
+                구매계약 체결 및 배송
+                기타 "몰"이 정하는 업무
+                ② "몰"은 상품의 품절, 기술적 사양 변경 등의 경우 서비스 내용을 변경할 수 있으며, 변경 사항을 즉시 공지합니다.
+                
+                제5조(회원가입)
+                
+                ① 이용자는 "몰"이 정한 가입 양식에 따라 회원정보를 기입한 후 약관에 동의함으로써 회원가입을 신청합니다.
+                
+                ② "몰"은 다음의 사유에 해당하지 않는 한 회원으로 등록합니다.
+                
+                이전에 회원자격을 상실한 자
+                허위 기재, 기재누락 등의 경우
+                제6조(회원 탈퇴 및 자격 상실)
+                
+                ① 회원은 언제든지 탈퇴를 요청할 수 있으며, "몰"은 즉시 처리합니다.
+                
+                ② 회원이 다음 각호에 해당하는 경우, "몰"은 회원자격을 제한 및 정지할 수 있습니다.
+                
+                허위 내용 등록
+                대금 미지급
+                제7조(구매신청 및 계약의 성립)
+                
+                ① 이용자는 "몰"에서 제공하는 방법에 따라 구매를 신청하며, "몰"은 이를 수락할 수 있습니다.
+                
+                ② 계약의 성립은 "몰"의 승낙이 이용자에게 도달한 시점으로 합니다.
+                
+                제8조(환급 및 청약철회)
+                
+                ① 이용자는 수신확인 통지를 받은 날부터 7일 이내에 청약을 철회할 수 있습니다.
+                
+                ② 환급은 이용자가 반환한 날로부터 3영업일 이내에 이루어집니다.
+                
+                제9조(개인정보 보호)
+                
+                ① "몰"은 이용자의 최소한의 정보를 수집하며, 개인정보는 동의 없이 제3자에게 제공하지 않습니다.
+                
+                ② 이용자는 자신의 개인정보에 대한 열람 및 오류 정정을 요구할 수 있습니다.
+                
+                제10조(분쟁해결)
+                
+                ① "몰"은 이용자의 정당한 의견이나 불만을 반영하여 피해 보상 처리기구를 운영합니다.
+                
+                ② 전자상거래 분쟁에 관한 소송은 이용자의 주소지 관할 법원에 제기합니다.
+                
+                부칙
+                
+                이 약관은 2025년 02월 26일부터 시행됩니다.
+            </textarea>
+            <div class="private_info flex">
+                <input type="checkbox" name="체크박스" class="check_box" title="정보이벤트 메일 수신 동의" id="check_info">
+                <label for="check_info">펫# 개인정보 수집 및 이용약관에 동의합니다.</label>
+            </div>
+        </article>
+        <article class="sign_up">
+            <h2>회원가입</h2>
+            <form action="login.php" method="post" name="sign_up" class="input_block" id="s_done">
+                <input type="text" title="아이디 입력" placeholder="아이디" class="input_block" id="id">
+                <input type="password" name="password" title="비밀번호 입력" id="password" placeholder="비밀번호" class="input_block">
+                <input type="password" name="password_check" title="비밀번호 확인" id="password_check" placeholder="비밀번호 확인" class="input_block">
+                <input type="text" name="name" title="이름 입력" id="name" placeholder="이름" class="input_block">
+                <input type="text" name="nickname" title="닉네임 입력" id="nik_name" placeholder="닉네임" class="input_block">
+                <div id="tell" class="flex">
+                    <select name="tel" class="input_block">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                        <option value="02">02</option>
+                    </select>
+                    <input type="text" name="telnumber" class="input_block" title="휴대전화번호 입력" placeholder="휴대전화번호" id="hp">
+                </div>
+                <div class="tell_box flex">
+                    <input type="text" title="인증번호 입력" name="certification_number" placeholder="인증번호" class="input_block" id="inumber">
+                    <input type="button" value="인증번호 확인" title="인증번호 확인" class="input_block">
+                </div>
+                <div class="email_box flex">
+                    <input type="text" placeholder="이메일" name="email" title="이메일아이디 입력" class="input_block email_id">
+                    <span class="email_at">@</span>
+                    <input type="text" name="email_domain" class="input_block email_add" title="이메일주소 입력">
+                </div>
+                <hr>
+                <div class="sms flex">
+                  <input type="checkbox" name="이벤트메일" class="check_box" title="정보이벤트 메일 수신 동의" id="eventmail_agree">
+                  <label for="eventmail_agree">정보/이벤트 메일 수신에 동의합니다.</label>
+              </div>
+              <div class="sms flex">
+                  <input type="checkbox" name="이벤트문자" class="check_box" title="정보이벤트 문자 수신 동의" id="eventsns_agree">
+                  <label for="eventsns_agree">정보/이벤트 문자 수신에 동의합니다.</label>
+              </div>
+                <input type="submit" value="회원가입" id="signUp" title="회원가입 제출">
+            </form>
+        </article>
+    </main>
+    <!-- signup -->
+
+    <!-- footer -->
+    <div id="footer">
+        <div class="ft_li1">
+            <ul>
+                <li><a>회사소개</a></li>
+                <li><a>이용약관</a></li>
+                <li><a href="/html/post/post.html">공지사항</a></li>
+                <li><a href="/html/post/boder.html">F&Q</a></li>
+                <li><a>쇼핑몰 이용안내</a></li>
+                <li><a>개인정보취급방침</a></li>
+            </ul>
+        </div>
+        <div class="ft_li2">
+            <div class="company_logo">
+                <a><img src="/resources/images/petshop.png" alt="회사로고"></a>
+            </div>
+
+            <div class="subscribe">
+                <div class="email_gg">
+                    <input type="text" id="email_put" placeholder="이메일을 입력하세요" title="이메일 구독적는곳">
+                    <input type="button" value="구독" class="email_btn">  
+                </div>
+                <span>새로운 제품이 들어올 때나 이벤트 할인행사를 진행할 때 전해드립니다.<br>
+                    구독은 언제든지 해지하실 수 있습니다.<a href="/html/login/login.html">해지하기</a></span>
+            </div>
+        
+            <div class="sns">
+                <a href="https://www.instagram.com/" title="인스타링크">
+                    <img src="/resources/images/ft_instagram.png" alt="인스타">
+                </a>
+                <a href="https://www.kakaocorp.com/" title="카카오링크">
+                    <img src="/resources/images/ft_kakao.png" alt="카카오톡">
+                </a>
+                <a href="https://www.naver.com/" title="네이버">
+                    <img src="/resources/images/ft_naver.png" alt="네이버">
+                </a>
+                <a href="https://www.youtube.com/" title="유튜브">
+                    <img src="/resources/images/ft_youtube.png" alt="유튜브">
+                </a>
+            </div>
+        </div>
+        <div class="ft_li3">
+            <div class="company_info">
+                <h3>Company Info</h3>
+                <div class="company_info_d">
+                    <p><a><b>회사명</b>Pet샵</a>
+                    <a><b>대표</b>손한이</a>
+                    <a><b>대표전화</b>1577 - 0000</a></p>
+                    <p><a><b>팩스</b>00 - 000 - 0000</a>
+                    <a><b>주소</b>대구 동구 동부로121 6층 Pet샵</a></p>
+                    <p><a><b>사업자 등록번호</b>000-00-00000</a>      
+                    <a><b>개인정보보호책임자</b>양수경</a>
+                    <a><b>이메일</b>Pet_Shop@naver.com</a></p>
+                </div>
+            </div>
+
+            <div class="bank_info">
+                <h3>Bank Info</h3>
+                <p><b>아이엠뱅크(구 대구은행)</b> 000-00000-00-000</p>
+                <p><b>예금주</b> Pet샵</p>
+                <select name="bank_list">
+                    <option value="0"><a>인터넷뱅킹 바로가기</a></option>
+                    <option value="1">대구은행</option>
+                    <option value="2">농협은행</option>
+                    <option value="3">국민은행</option>
+                    <option value="4">신한은행</option>
+                </select>
+            </div>
+
+            <div class="cs_center">
+                <h3>Customer Center</h3>
+                <p>
+                    <i class="bi bi-telephone-fill"></i>
+                    <a>1577 - 0000</a>
+                </p>
+                <ul>
+                    <li><b>평일</b><a>오전 10:00 ~ 오후 05:00</a></li>
+                    <li><b>점심</b><a>오후 01:00 ~ 오후 02:00</a></li>
+                    <li><b>휴무</b><a>토/일/공휴일은 휴무</a></li>
+                </ul>
+
+                <p><a href="/html/contactus/contactus.html">교환/취소/환불은 1:1 문의게시판을 이용해주세요</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+
+    <script src="/resources/js/signup.js"></script>
+    <script src="/resources/js/index.js"></script>
+    <!-- Google JQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</body>
+</html>

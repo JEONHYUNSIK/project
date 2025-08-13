@@ -1,0 +1,111 @@
+/* contactus.css */
+
+/* 기본 스타일 설정 */
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+} */
+
+/* 폼 영역 스타일 */
+.form_area {
+    width: 80%;
+    max-width: 600px;
+    margin: 50px auto;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.form_area ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.form_area li {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.sh_input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.sh_input:focus {
+    border-color: #1d8dee;
+    outline: none;
+}
+
+label {
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    font-size: 14px;
+    color: #666;
+    background-color: #ffffff;
+    padding: 0 5px;
+}
+
+.prv_area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.prv_area a {
+    color: #1d8dee;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.prv_area a:hover {
+    text-decoration: underline;
+}
+
+.prv_label {
+    margin-right: 10px;
+}
+
+.ck_box {
+    width: 20px;
+    height: 20px;
+}
+
+.send {
+    width: 100%;
+    padding: 15px;
+    background-color: #1d8dee;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.send:hover {
+    background-color: #155a9c;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .form_area {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .sh_input {
+        font-size: 14px;
+    }
+
+    .send {
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>펫#의류/악세서리</title>
+    
+    <!-- 펫샵 팀 css -->
+    <link href="/resources/css/index.css" rel="stylesheet">
+    <link href="/resources/css/item.css" rel="stylesheet">
+    <link href="/resources/css/itembuy.css" rel="stylesheet">
+    <link href="/resources/css/itemreview.css" rel="stylesheet">
+    <!-- 부트스트랩 추가-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    
+    <!-- 부트스트랩 아이콘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    
+</head>
+<body>
+     <!-- 버튼 시작 -->
+     <div id="goingTop" onclick="window.scrollTo(0,0);"><img src="/resources/images/upupup.png"></div>
+     <!-- 버튼 끝 -->
+     <!-- 헤더 시작 -->
+  <div id="header_wrap">
+    <div id="navbar2">
+        <div class="spacer"></div>
+    </div>
+    
+    <div id="navbar">
+      <a href="/html/index/index.html" id="logo">
+            <img src="/resources/images/petshop.png" alt="로고">
+      </a>
+      <div id="b_me_wrap">
+        <ul id="menu_wrap">
+          <li><a href="/html/index/index.html"><b>홈</b></a></li>
+          <li>
+            <a href="#"><b>게시판</b></a>
+            <ul id="de_menu1" class="de_menu_bg">
+              <li><a href="/html/post/post.html"><b>공지사항</b></a></li>
+              <li><a href="/html/post/boder.html"><b>자유게시판</b></a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#"><b>제품소개</b></a>
+            <ul id="de_menu2" class="de_menu_bg">
+              <li><a href="/html/item/item.html"><b>의류/악세서리</b></a></li>
+              <li><a href="/html/snack/snack.html"><b>간식/사료</b></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- 메뉴랩 끝 -->
+
+      <div id="icon_wrap">
+        <a href="#" title="찾기">
+          <i class="bi bi-search" id="i_search"></i>
+        </a>
+        <a href="/html/cart/cart.html" title="장바구니">
+          <i class="bi bi-cart-plus"></i>
+        </a>
+        <a href="/html/login/login.html" title="마이페이지">
+          <i class="bi bi-person-fill"></i>
+        </a>
+      </div>
+      <!-- 아이콘 랩 끝 -->
+    </div>
+    <!-- 중요 헤더 끝 -->
+
+  </div>
+  <!-- 헤더 랩 끝 -->
+
+  <!-- 헤더의 search -->
+  <div id="search_box">
+    <form action="/html/item/item.html" method="get" name="search_item" role="search">
+        <div id="s_wrap">
+            <input type="search" id="pc_search" name="search_name" class="pc_search_bar"
+                placeholder="찾는 물건을 입력하세요.">
+            <button type="submit" id="pc_search_ic">검색</button>
+        </div>
+    </form>
+ </div>
+
+  <!-- 헤더의 search 끝! -->
+  <!-- 헤더는여기서 끄읕~~ 나머지는 홈! -->
+
+  <!-- *******************************헤더/네비게이션 끝**************************** -->
+
+    <div id="carouselExampleCaptions" class="carousel slide"
+         data-bs-ride="carousel">
+         <div class="carousel-indicators">
+             <button type="button" data-bs-target="#carouselExampleCaptions"
+             data-bs-slide-to="0" class="active" aria-current="true"
+             aria-label="Slide 1"></button>
+             <button type="button" data-bs-target="#carouselExampleCaptions"
+             data-bs-slide-to="1" aria-label="Slide 2"></button>
+             <button type="button" data-bs-target="#carouselExampleCaptions"
+             data-bs-slide-to="2" aria-label="Slide 3"></button>
+             <button type="button" data-bs-target="#carouselExampleCaptions"
+             data-bs-slide-to="3" aria-label="Slide 4"></button>
+       </div>
+       <div class="carousel-inner">
+        <!-- 1번째 화면 -->
+         <div class="carousel-item active">
+            <img src="/resources/images/강아지1.jpg" class="d-block w-100"
+            alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>펫#</h5>
+                <p>반려동물을 위한 최고의 선택, 펫#에서 만나보세요</p>
+             </div>
+         </div>
+        <!-- 2번째 화면 -->
+         <div class="carousel-item">
+            <img src="/resources/images/강아지2.jpg" class="d-block w-100"
+            alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>펫#</h5>
+                <p>반려동물의 행복을 위한 필수 아이템, 지금 바로 확인해보세요!</p>
+             </div>
+         </div>
+        
+        <!-- 3번째 화면 -->
+         <div class="carousel-item">
+            <img src="/resources/images/강아지3.jpg" class="d-block w-100"
+            alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>펫#</h5>
+                <p>건강하고 행복한 반려동물을 위한 최고의 사료와 용품!</p>
+             </div>
+         </div>
+         <!-- 4번째 화면 -->
+         <div class="carousel-item">
+            <img src="/resources/images/강아지4.jpg" class="d-block w-100"
+            alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>펫#</h5>
+                <p>우리 반려동물에게 특별한 선물을 준비하세요!</p>
+             </div>
+         </div>
+
+       </div>
+
+       <!-- < 버튼 -->
+        <button class="carousel-control-prev" type="button"
+        data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+        </button>
+
+        <!-- > 버튼 -->
+        <button class="carousel-control-next" type="button"
+        data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+
+    </div>
+    <div class="col-12">
+        <a href="/html/item/itemupdate.html" id="update-button" class="btn btn-warning px-8 px-sm-11 me-2">수정하기</a>
+        <a href="/html/item/item.html" id="delete-button" class="btn btn-danger px-8 px-sm-11 me-2">삭제하기</a>
+    </div>
+  
+    <div class="item_1">
+        <div class="item-image">
+            <a href="#"><img src="/resources/images/리드줄.jpg" alt="리드줄"></a>
+        </div>
+    </div>
+    
+    <form class="item-buy-form">
+    <div class="item-buy-container">
+        <h1>컴포트 세트 2.0(하네스+리쉬)</h1>
+        <div class="item-details">
+            <p class="description">
+                &emsp;&emsp;기도 압박 없이 편리하게 착용/분리 가능한 COMFORT-X HARNESS 2.0<br> 
+                &emsp;&emsp;3중 웨빙으로 인한 내구성이 우수한 COMFORT LEASH 2.0<br> 
+        </div>
+        <span class="new">NEW</span>
+        <p class="information">FOR DOGS</p>
+        <p class="price">일반가:￦77,000원</p>
+        <p class="price">일반할인가: 34% ￦50,900원</p>
+        <p class="vip-price">VIP회원가: 추가 25% 할인가 50% ￦38,200원</p>
+        
+        <div class="options">
+            <div class="color-selection">
+                <label>색상:</label>
+                <select>
+                    <option>블루</option>
+                </select>
+            </div>
+            <div class="size-selection">
+                <label>사이즈:</label>
+                <select>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="cart-info">
+            <p>총 상품금액 (수량): 0 (0개)</p>
+        </div>
+
+        <div class="buttons">
+          <button class="btn" id="add-to-cart">장바구니 담기</button>
+          <button class="btn" id="buy-now">구매하기</button>
+      </div>
+  </div>
+  </form>
+
+    
+    <div class="itemreview">
+        <!-- 댓글 작성 폼 -->
+     
+            <div class="mb-3">
+                <label class="form-label">닉네임</label>
+                <input type="text" class="form-control" id="new-itemreview-nickname" placeholder="닉네임을 입력하세요">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">댓글 내용</label>
+                <textarea type="text" class="form-control" rows="3" id="new-itemreview-body" placeholder="댓글을 입력하세요"></textarea>
+            </div>
+            <!-- hidden input -->
+            <input type="hidden" id="new-itemreview-article-id" value="{{id}}">
+            <button type="button" class="btn btn-primary" id="itemreview-create-btn">댓글 작성</button>
+        <div id="comments-section" class="comments-section">
+            <!-- 댓글이 여기에 추가됩니다 -->
+        </div>
+    </div>
+
+   <!-- footer -->
+ <div id="footer">
+  <div class="ft_li1">
+    <ul>
+      <li><a>회사소개</a></li>
+      <li><a>이용약관</a></li>
+      <li><a href="/html/post/post.html">공지사항</a></li>
+      <li><a href="/html/post/boder.html">F&Q</a></li>
+      <li><a>쇼핑몰 이용안내</a></li>
+      <li><a>개인정보취급방침</a></li>
+    </ul>
+  </div>
+  <div class="ft_li2">
+    <div  class="company_logo">
+      <a><img src="/resources/images/petshop.png" alt="회사로고"></a>
+    </div>
+
+    <div class="subscribe">
+      <div class="email_gg">
+        <input type="text" id="email_put" placeholder="이메일을 입력하세요" title="이메일 구독적는곳">
+        <input type="button" value="구독" class="email_btn">  
+      </div>
+      <span>새로운 제품이 들어올 때나 이벤트 할인행사를 진행할 때 전해드립니다.<br>
+        구독은 언제든지 해지하실 수 있습니다.<a href="/html/login/login.html">해지하기</a></span>
+    </div>
+   
+    <div class="sns">
+      <a href="https://www.instagram.com/" title="인스타링크">
+        <img src="/resources/images/ft_instagram.png" alt="인스타">
+      </a>
+      <a href="https://www.kakaocorp.com/" title="카카오링크">
+        <img src="/resources/images/ft_kakao.png" alt="카카오톡">
+      </a>
+      <a href="https://www.naver.com/" title="네이버">
+        <img src="/resources/images/ft_naver.png" alt="네이버">
+      </a>
+      <a href="https://www.youtube.com/" title="유튜브">
+        <img src="/resources/images/ft_youtube.png" alt="유튜브">
+      </a>
+    </div>
+  </div>
+  <div class="ft_li3">
+    <div class="company_info">
+      <h3>Company Info</h3>
+      <div class="company_info_d">
+        <p><a><b>회사명</b>Pet샵</a>
+        <a><b>대표</b>손한이</a>
+        <a><b>대표전화</b>1577 - 0000</a></p>
+        <p><a><b>팩스</b>00 - 000 - 0000</a>
+        <a><b>주소</b>대구 동구 동부로121 6층 Pet샵</a></p>
+        <p><a><b>사업자 등록번호</b>000-00-00000</a>      
+        <a><b>개인정보보호책임자</b>양수경</a>
+        <a><b>이메일</b>Pet_Shop@naver.com</a></p>
+      </div>
+    </div>
+
+    <div class="bank_info">
+      <h3>Bank Info</h3>
+      <p><b>아이엠뱅크(구 대구은행)</b> 000-00000-00-000</p>
+      <p><b>예금주</b> Pet샵</p>
+      <select name="bank_list">
+        <option value="0"><a>인터넷뱅킹 바로가기</a></option>
+        <option value="1">대구은행</option>
+        <option value="2">농협은행</option>
+        <option value="3">국민은행</option>
+        <option value="4">신한은행</option>
+             <!-- 시간되면 브라보펫 참고하기 -->
+      </select>
+    </div>
+
+    <div class="cs_center">
+      <h3>Customer Center</h3>
+      <p>
+        <i class="bi bi-telephone-fill"></i>
+        <a>1577 - 0000</a>
+      </p>
+      <ul>
+        <li><b>평일</b><a>오전 10:00 ~ 오후 05:00</a></li>
+        <li><b>점심</b><a>오후 01:00 ~ 오후 02:00</a></li>
+        <li><b>휴무</b><a>토/일/공휴일은 휴무</a></li>
+      </ul>
+
+      <p><a href="/html/contactus/contactus.html">교환/취소/환불은 1:1 문의게시판을 이용해주세요</a></p>
+    </div>
+  </div>
+</div>
+<!-- footer -->
+    <script src="/resources/js/index.js" ></script>
+    <script src="/resources/js/itembuy.js"></script>
+    <script src="/resources/js/itemupdate.js"></script>
+    <script src="/resources/js/itemreview.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

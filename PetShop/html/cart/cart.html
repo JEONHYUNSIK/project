@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 펫샵 팀 css -->
+    <link href="/resources/css/index.css" rel="stylesheet" />
+    <link href="/resources/css/cart.css" rel="stylesheet" />
+
+    <!-- 부트스트랩 추가-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- sweet alert -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+    />
+
+    <!-- 부트스트랩 아이콘 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <!-- 버튼 시작 -->
+    <div id="goingTop" onclick="window.scrollTo(0,0);">
+      <img src="/resources/images/upupup.png" />
+    </div>
+    <!-- 버튼 끝 -->
+
+    <!-- 헤더 시작 -->
+    <div id="header_wrap">
+      <div id="navbar2">
+        <div class="spacer"></div>
+      </div>
+
+      <div id="navbar">
+        <a href="/html/index/index.html" id="logo">
+          <img src="/resources/images/petshop.png" alt="로고" />
+        </a>
+        <div id="b_me_wrap">
+          <ul id="menu_wrap">
+            <li>
+              <a href="/html/index/index.html"><b>홈</b></a>
+            </li>
+            <li>
+              <a href="#"><b>게시판</b></a>
+              <ul id="de_menu1" class="de_menu_bg">
+                <li>
+                  <a href="/html/post/post.html"><b>공지사항</b></a>
+                </li>
+                <li>
+                  <a href="/html/post/boder.html"><b>자유게시판</b></a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#"><b>제품소개</b></a>
+              <ul id="de_menu2" class="de_menu_bg">
+                <li>
+                  <a href="/html/item/item.html"><b>의류/악세서리</b></a>
+                </li>
+                <li>
+                  <a href="/html/snack/snack.html"><b>간식/사료</b></a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- 메뉴랩 끝 -->
+
+        <div id="icon_wrap">
+          <a href="#" title="찾기">
+            <i class="bi bi-search" id="i_search"></i>
+          </a>
+          <a href="/html/cart/cart.html" title="장바구니">
+            <i class="bi bi-cart-plus"></i>
+          </a>
+          <a href="/html/login/login.html" title="마이페이지">
+            <i class="bi bi-person-fill"></i>
+          </a>
+        </div>
+        <!-- 아이콘 랩 끝 -->
+      </div>
+      <!-- 중요 헤더 끝 -->
+    </div>
+    <!-- 헤더 랩 끝 -->
+
+    <!-- 헤더의 search -->
+    <div id="search_box">
+      <form action="물품html넣기" method="get" name="search_item" role="search">
+        <div id="s_wrap">
+          <input
+            type="search"
+            id="pc_search"
+            name="search_name"
+            class="pc_search_bar"
+            placeholder="찾는 물건을 입력하세요."
+          />
+          <button type="submit" id="pc_search_ic">검색</button>
+        </div>
+      </form>
+    </div>
+    <!-- 헤더 끝 메인 시작 -->
+
+    <div id="cart_wrap">
+      <div class="head_text">
+        <h1>장바구니</h1>
+      </div>
+      <div id="cart_list">
+        <table id="table_wrap">
+          <thead>
+            <tr style="text-align: center">
+              <th class="th_1"></th>
+              <th class="th_2">상품명</th>
+              <th class="th_3">가격</th>
+              <th class="th_4">수량</th>
+              <th class="th_5">합계</th>
+              <th class="th_6">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="text-align: center" class="cart_item_list">
+              <td class="td_1">
+                <a href="/html/item/itemreaddetail_1.html"
+                  ><img src="/resources/images/스마트매너벨트.jpg"
+                /></a>
+              </td>
+              <td class="td_2"><a href="#" class="name">스마트매너벨트</a></td>
+              <td class="td_3"><a href="#" class="price">45,000원</a></td>
+              <td class="td_4">
+                <input type="number" name="count" class="count" value="1" />
+              </td>
+              <td class="td_5"><a class="result_price">45,000원</a></td>
+              <td class="td_6">
+                <button type="button" onclick="deleteRow(this);">X</button>
+              </td>
+            </tr>
+            <tr style="text-align: center" class="cart_item_list">
+              <td class="td_1">
+                <a href="/html/item/itemreaddetail_2.html"
+                  ><img src="/resources/images/리드줄.jpg"
+                /></a>
+              </td>
+              <td class="td_2">
+                <a href="#" class="name">컴포트 세트 2.0 (하네스+리쉬)</a>
+              </td>
+              <td class="td_3"><a href="#" class="price">77,000원</a></td>
+              <td class="td_4">
+                <input type="number" name="count" class="count" value="1" />
+              </td>
+              <td class="td_5"><a class="result_price">77,000원</a></td>
+              <td class="td_6">
+                <button type="button" onclick="deleteRow(this);">X</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="all_list_wrap">
+        <div id="all_list">
+          <table>
+            <tbody>
+              <tr>
+                <td><b>총 상품 가격</b></td>
+                <td><a>122,000원</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><b>총 주문 상품 수</b></td>
+                <td><a>2개</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><b>총 결제 예상 금액</b></td>
+                <td><a>122,000원</a></td>
+                <td><b>총 적립 예상 마일리지</b></td>
+                <td><a>1,220원</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--all_list_wrap 끝-->
+    </div>
+    <!--cart_wrap 끝-->
+
+    <!-- 푸터 시작 -->
+    <div id="footer">
+      <div class="ft_li1">
+        <ul>
+          <li><a>회사소개</a></li>
+          <li><a>이용약관</a></li>
+          <li><a href="../post/post.html">공지사항</a></li>
+          <li><a href="../post/boder.html">F&Q</a></li>
+          <li><a>쇼핑몰 이용안내</a></li>
+          <li><a>개인정보취급방침</a></li>
+        </ul>
+      </div>
+      <div class="ft_li2">
+        <div class="company_logo">
+          <a><img src="/resources/images/petshop.png" alt="회사로고" /></a>
+        </div>
+
+        <div class="subscribe">
+          <div class="email_gg">
+            <input
+              type="text"
+              id="email_put"
+              placeholder="이메일을 입력하세요"
+              title="이메일 구독적는곳"
+            />
+            <input type="button" value="구독" class="email_btn" />
+          </div>
+          <span
+            >새로운 제품이 들어올 때나 이벤트 할인행사를 진행할 때
+            전해드립니다.<br />
+            구독은 언제든지 해지하실 수 있습니다.<a href="../login/login.html"
+              >해지하기</a
+            ></span
+          >
+        </div>
+
+        <div class="sns">
+          <a href="https://www.instagram.com/" title="인스타링크">
+            <img src="/resources/images/ft_instagram.png" alt="인스타" />
+          </a>
+          <a href="https://www.kakaocorp.com/" title="카카오링크">
+            <img src="/resources/images/ft_kakao.png" alt="카카오톡" />
+          </a>
+          <a href="https://www.naver.com/" title="네이버">
+            <img src="/resources/images/ft_naver.png" alt="네이버" />
+          </a>
+          <a href="https://www.youtube.com/" title="유튜브">
+            <img src="/resources/images/ft_youtube.png" alt="유튜브" />
+          </a>
+        </div>
+      </div>
+      <div class="ft_li3">
+        <div class="company_info">
+          <h3>Company Info</h3>
+          <div class="company_info_d">
+            <p>
+              <a><b>회사명</b>Pet샵</a>
+              <a><b>대표</b>손한이</a>
+              <a><b>대표전화</b>1577 - 0000</a>
+            </p>
+            <p>
+              <a><b>팩스</b>00 - 000 - 0000</a>
+              <a><b>주소</b>대구 동구 동부로121 6층 Pet샵</a>
+            </p>
+            <p>
+              <a><b>사업자 등록번호</b>000-00-00000</a>
+              <a><b>개인정보보호책임자</b>양수경</a>
+              <a><b>이메일</b>Pet_Shop@naver.com</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="bank_info">
+          <h3>Bank Info</h3>
+          <p><b>아이엠뱅크(구 대구은행)</b> 000-00000-00-000</p>
+          <p><b>예금주</b> Pet샵</p>
+          <select name="bank_list" onchange="window.open(this.value);">
+            <option value><a>인터넷뱅킹 바로가기</a></option>
+            <option value="https://www.imbank.co.kr/dgb_ebz_main.jsp">대구은행</option>
+            <option value="https://banking.nonghyup.com/nhbank.html">농협은행</option>
+            <option value="https://www.kbstar.com/">국민은행</option>
+            <option value="https://www.shinhan.com/index.jsp">신한은행</option>
+            <!-- 시간되면 브라보펫 참고하기 -->
+          </select>
+        </div>
+
+        <div class="cs_center">
+          <h3>Customer Center</h3>
+          <p>
+            <i class="bi bi-telephone-fill"></i>
+            <a>1577 - 0000</a>
+          </p>
+          <ul>
+            <li><b>평일</b><a>오전 10:00 ~ 오후 05:00</a></li>
+            <li><b>점심</b><a>오후 01:00 ~ 오후 02:00</a></li>
+            <li><b>휴무</b><a>토/일/공휴일은 휴무</a></li>
+          </ul>
+
+          <p>
+            <a href="../post/boder.html"
+              >교환/취소/환불은 1:1 문의게시판을 이용해주세요</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- footer -->
+    <script src="/resources/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

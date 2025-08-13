@@ -1,0 +1,76 @@
+/* Main 영역 스타일 */
+main {
+    padding: 40px;
+    background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+    max-width: 600px; /* 너비를 줄여서 더 집중된 느낌 */
+    margin: 50px auto; /* 상하 여백 추가 */
+    border-radius: 16px; /* 둥근 모서리 강조 */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 그림자 효과 강화 */
+}
+
+.use_book, .sign_up {
+    margin-bottom: 30px; /* 아래 여백 증가 */
+}
+
+.use_book h2, .sign_up h2 {
+    font-size: 24px; /* 제목 크기 감소 */
+    margin-bottom: 10px; /* 아래 여백 감소 */
+    color: #333; /* 제목 색상 */
+    font-weight: bold; /* 제목 두께 강조 */
+}
+
+.use_book textarea {
+    width: 100%;
+    height: 250px; /* 텍스트 영역 높이 감소 */
+    padding: 14px; /* 패딩 증가 */
+    border: 1px solid #dcdcdc;
+    border-radius: 8px; /* 경계 반경 증가 */
+    resize: none;
+    font-size: 14px; /* 폰트 크기 감소 */
+    color: #555;
+    background-color: #f9f9f9; /* 배경색 추가 */
+}
+
+.private_info {
+    margin-top: 10px; /* 상단 여백 감소 */
+}
+
+.sign_up form {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign_up .input_block {
+    margin-bottom: 15px; /* 아래 여백 감소 */
+    padding: 12px; /* 패딩 증가 */
+    border: 1px solid #dcdcdc;
+    border-radius: 8px; /* 경계 반경 증가 */
+    font-size: 14px; /* 폰트 크기 감소 */
+    color: #555;
+    transition: border-color 0.3s; /* 테두리 색상 변화 효과 */
+}
+
+.sign_up .input_block:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+.sign_up input[type="submit"] {
+    padding: 12px; /* 패딩 증가 */
+    background-color: #007bff; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 8px; /* 경계 반경 증가 */
+    font-size: 16px; /* 폰트 크기 */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* 배경색 변화 및 확대 효과 */
+}
+
+.sign_up input[type="submit"]:hover {
+    background-color: #0056b3; /* 호버 시 색상 변화 */
+    transform: translateY(-2px); /* 위로 살짝 이동 */
+}
+
+.sign_up input[type="submit"]:active {
+    transform: translateY(0); /* 클릭 시 원래 위치로 복귀 */
+}

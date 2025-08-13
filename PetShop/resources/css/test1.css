@@ -1,0 +1,20 @@
+.hidden {display: none;}
+
+body {overflow-x: hidden;}
+
+
+/* 버튼 시작 */
+#goingTop {
+    position: fixed;
+    right: 5px;
+    bottom: 8%;
+    cursor: pointer;
+  }
+  
+  #goingTop img{
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* 버튼 끝 */
+

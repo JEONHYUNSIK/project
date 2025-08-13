@@ -1,0 +1,96 @@
+#items {
+    width: 800px;
+    margin: 0 auto;
+}
+
+#items .introduce h2 {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 26px;
+    color: #1d8dee;
+}
+
+.items_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    
+}
+
+#items .item a {
+    text-decoration: none;
+    color: #605e65;
+
+}
+.item {
+    height: 300px; 
+    margin: 0;
+    text-align: center;
+    width: calc(20% - 20px); 
+    display: block;
+    padding-top: calc(3% - 10px);
+}
+
+.item img {
+    width: 250px;
+    height: 250px;
+    margin-top: auto;
+    border-radius: 70px;
+    transition: transform 0.5s ease; /* 부드러운 전환 효과 추가 */
+    
+}
+
+.item img:hover {
+    transform: scale(1.5); /* 마우스 호버 시 이미지 확대 */
+}
+
+.item .name,
+.item .price {
+    color: black;
+    display: block;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    text-decoration: none; 
+}
+
+.clearfix {
+    clear: both;
+}
+
+.page-item {
+    margin-top: 100px;
+}
+
+
+.item1 {
+    margin-left: 110px;
+    margin-bottom: 50px;
+}
+
+.control {
+    margin-left: 110px;
+    margin-top: 110px;
+    margin-bottom: 50px;
+}
+
+.item_1 img {
+    width: 700px;
+    height: 700px;
+    margin-top: auto;
+    margin-left: 30%;
+    border-radius: 70px;
+}
+.item_1 .description {
+    margin-left: 550px;
+    font-size: 40px;
+
+}
+
+.col-12 .btn {
+    margin-left: 10px;
+}
+
+
