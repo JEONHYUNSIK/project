@@ -1,0 +1,66 @@
+
+next js 적용시 해야할 순서
+
+1. 터미널 열기
+
+2. npm install react react-dom 설치(에러나면 npm install react@19 react-dom@19 입력해보시오)
+
+3. npm run build
+
+4. npm run dev 또는 npm start
+
+
+
+docker - pgadmin 접속 방법
+
+1. 도커 실행
+
+2. 접속 http://localhost:5050/
+
+3. General - name - 아무 이름(user)
+
+4. Connection
+	- host name/address : contestapp-postgres
+	- Maintenance : contestapp
+	- Username : user
+	- Password : a1234
+5. 접속
+
+
+docker-compose down -v 
+
+docker-compose up -d --build
+
+
+
+403에러 - 권한 문제
+
+\back\api-gateway\Program.fs 경로에
+
+let webApp (serviceProvider: IServiceProvider) : HttpHandler
+아래에 새로운 기능 추가할시 내용 추가해야함(모르면 물어볼것!!)
+
+추가: controller에 로그인 안하고 볼 데이터는 매개변수에 @RequestHeader("X-USER-ID") String userId 뺄것
+	반대로 로그인 해야만 볼 수 있는 데이터는 매개변수에 @RequestHeader("X-USER-ID") String userId 추가하고 Auth.requireAuth >=> choose 에 경로 추가해야함
+
+
+<카카오맵 API 활성화 방법>
+Case 1 : 초대 받은 경우
+1. https://developers.kakao.com/ 접속 및 로그인
+2. 상단 <앱> - <일반> - 하단 내려서 <앱 키> : JavaScript 키 복사 (외부 공유 금지!!)
+3. .env.example 파일명을 -> .env.local로 변경 후 키 붙여넣기 (보안 이슈 방지)
+4. npm run build 실행 후 테스트
+
+Case 2: 초대 받지 않은 경우 (개인 포폴 작업 시)
+1. https://developers.kakao.com/ 접속 및 로그인
+2. 상단 <앱> 클릭 -> <앱 생성> 클릭 -> 적당히 기입 후 저장하고, 만들어진 앱 클릭
+3. 좌측 메뉴 <앱> 하단 스크롤 후 <플랫폼> - <Web>의 사이트 도메인 등록 (예: http://localhost:8080)
+4. 상단 <앱 키> 의 JavaScript 키 복사
+5. .env.example 파일명을 -> .env.local로 변경 후 키 붙여넣기 (보안 이슈 방지)
+6. npm run build 실행 후 테스트
+
+<공통 유의사항>
+1. .env.local 파일을 생성하여 개인 API 키를 발급 받아야 지도를 볼 수 있음!! (.env.example 파일명을 -> .env.local로 변경)
+2. 카카오 지도 API는 순수 JS 라이브러리이므로, 활용 및 수정이 필요할 경우 아래 코드를 터미널에 입력하여 타입 스크립트 방식으로 변경된 라이브러리를 설치
+	npm install kakao.maps.d.ts --save-dev --legacy-peer-deps
+3.(중요!!) 좌측 메뉴 <제품 설정> - <카카오맵> 의 <사용 설정> 상태를 ON으로 바꿔야 쿼터(토큰) 사용이 활성화 됨 (OFF 시 출력되지 않음)

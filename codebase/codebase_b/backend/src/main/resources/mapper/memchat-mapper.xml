@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberchatroom">
+
+    <insert id="save" parameterType="memberchatroom" useGeneratedKeys="true" keyProperty="id">
+        INSERT into memberchatroom (member, chatroom, lastCheckedAt)
+        values (#{member}, #{chatroom}, #{lastCheckedAt})
+    </insert>
+
+    <insert id="saveAll" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO memberchatroom (member, chatroom, lastCheckedAt)
+        values
+            <foreach collection="list" item="mapping" index="index" separator=",">
+                (#{mapping.member}, #{mapping.chatroom}, #{mapping.lastCheckedAt})
+            </foreach>
+    </insert>
+
+    <!--    select -->
+    <select id="existsByMemberIdAndChatroomId" parameterType="map"  resultType="boolean">
+        Select count(1)
+        FROM memberchatroom
+        where member = #{memberId}
+          AND chatroom = #{chatroomId}
+    </select>
+
+    <select id="findAllByMemberId" parameterType="int" resultType="memberchatroom">
+        select *
+        from memberchatroom
+        where member = #{memberId}
+    </select>
+
+    <select id="countMemberByChatroomId" parameterType="int" resultType="int">
+        SELECT count(1)
+        FROM memberchatroom
+        where chatroom = #{chatroomId}
+    </select>
+
+    <select id="findByMemberIdAndChatroomId" parameterType="map"  resultType="memberchatroom">
+        SELECt *
+        FROm memberchatroom
+        where member = #{memberId}
+          AND chatroom = #{chatroomId}
+    </select>
+
+    <select id="findByChatroomId" parameterType="int" resultType="memberchatroom">
+        SELECT *
+        FROM memberchatroom
+        where chatroom = #{chatroomId}
+    </select>
+
+    <select id="findByTwoMemberId" parameterType="map" resultType="int">
+        SELECT cm1.chatroom
+        FROM memberchatroom cm1
+                 JOIN memberchatroom cm2 ON cm1.chatroom = cm2.chatroom
+        WHERE cm1.member = #{memberId1}
+          AND cm2.member = #{memberId2}
+          AND cm1.chatroom IN (SELECT id FROM chatroom WHERE DM = true)
+    </select>
+
+    <select id="findMembersByChatroomId" parameterType="int" resultType="int">
+        SELECT member
+        FROM memberchatroom
+        WHERE chatroom = #{chatroomId}
+    </select>
+
+    <!-- update  -->
+    <update id="updateLastCheckedByMemberIdAndChatroomId" parameterType="map" statementType="PREPARED">
+        UPDATE memberchatroom
+        SET lastCheckedAt = #{checked}
+        where member = #{memberId}
+          AND chatroom = #{chatroomId}
+    </update>
+
+    <!--    delete    -->
+    <delete id="deleteByMemberIdAndChatroomId">
+        delete
+        from memberchatroom
+        where member = #{memberId}
+          AND chatroom = #{chatroomId}
+    </delete>
+
+</mapper>

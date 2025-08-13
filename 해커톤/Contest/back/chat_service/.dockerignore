@@ -1,0 +1,38 @@
+# Build outputs
+_build/
+ebin/
+.eunit/
+.rebar/
+.rebar3/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+doc/
+*.md
+!README.md
+
+# Test files
+test_chat.html
+test/
+
+# Logs
+*.log
+logs/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore 

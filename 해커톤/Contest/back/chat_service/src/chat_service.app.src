@@ -1,0 +1,21 @@
+{application, chat_service, [
+    {description, "Contest Platform Chat Service"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {mod, {chat_service_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        cowboy,
+        jsx,
+        eredis,
+        pooler,
+        cqerl
+    ]},
+    {env, [
+        {port, 8085}
+    ]},
+    {modules, []},
+    {licenses, ["Apache-2.0"]},
+    {links, []}
+ ]}.

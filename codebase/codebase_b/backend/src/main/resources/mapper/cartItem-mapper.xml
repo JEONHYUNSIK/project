@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.codebase.backend.project.mapper.CartItemMapper">
+
+	<!-- 앞쪽 묶음이 테이블 컬럼, 뒤쪽 묶음 DTO필드 -->
+	<insert id="insertCartItem"
+		parameterType="com.codebase.backend.project.dto.CartItem">
+		INSERT INTO cartitem (title, price, project_id,cart_id)
+		VALUES (#{title},#{price},${project_id},#{cart_id});
+	</insert>
+
+	<select id="selectCartItemByCartId"
+		resultType="com.codebase.backend.project.dto.CartItem">
+		SELECT * FROM cartitem
+		WHERE cart_id = #{id};
+	</select>
+
+	<select id="findById"
+		resultType="com.codebase.backend.project.dto.CartItem">
+		SELECT * FROM cartitem
+		WHERE id = #{id};
+	</select>
+	<!-- 카트 페이지에서 호출 -->
+	<select id="findByCartId" parameterType="int"
+		resultType="com.codebase.backend.project.dto.CartItem">
+		SELECT
+		ci.id,
+		p.title,
+		p.price,
+		p.img
+		FROM cartitem ci
+		JOIN project p ON ci.project_id = p.id
+		WHERE cart_id = #{id} 
+			AND p.isdelete = 'n' 
+			AND p.maker_id IS NOT NULL 
+			AND p.issoldout = 'n' 
+			AND p.isdelete = 'n' ;
+	</select>
+	<!-- 카트 페이지 페이징 -->
+	<select id="findByCartIdPage"
+		resultType="com.codebase.backend.project.dto.CartItem" parameterType="int">
+		SELECT * FROM cartitem
+		WHERE cart_id = #{cart_id}
+		ORDER BY id DESC
+		LIMIT 5 OFFSET #{offset};
+	</select>
+	
+	<!-- 장바구니에 담겨있는지 확인 -->
+	<select id="findByProjectCartId"
+		resultType="com.codebase.backend.project.dto.CartItem" parameterType="int">
+		SELECT * FROM cartitem
+		WHERE cart_id = #{cart_id} AND project_id = #{project_id};
+	</select>
+
+	<delete id="deleteCartItemById" parameterType="int">
+		DELETE FROM
+		cartitem WHERE id = #{id};
+	</delete>
+	
+	<!-- 장바구니에서 제거 -->
+	<delete id="deleteByProjectCartId" parameterType="int">
+		DELETE FROM cartitem 
+		WHERE cart_id = #{cart_id} AND project_id = #{project_id};
+	</delete>
+	
+	<!-- 프로젝트 삭제 시 카트도 삭제 -->
+<!-- 	<delete id="deleteByProjectId" parameterType="int">
+		DELETE * FROM cartitem
+		WHERE project_id = #{project_id};
+	</delete> -->
+
+
+</mapper>

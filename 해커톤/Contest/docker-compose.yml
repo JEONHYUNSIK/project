@@ -1,0 +1,275 @@
+version: '3.8'
+
+services:
+  # 인프라 서비스
+  postgres:
+    image: postgres:14
+    container_name: contestapp-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: a1234
+      POSTGRES_DB: contestapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./back/db/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
+    networks:
+      - contestapp-network
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:6
+    container_name: contestapp-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: a1234
+      MONGO_INITDB_DATABASE: contestapp
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./back/db/init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js
+    networks:
+      - contestapp-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: contestapp-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./back/db/init-redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - contestapp-network
+    restart: unless-stopped
+
+  scylladb:
+    image: scylladb/scylla:6.0
+    container_name: contestapp-scylladb
+    ports:
+      - "9042:9042"
+    volumes:
+      - scylladb_data:/var/lib/scylla
+    networks:
+      - contestapp-network
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: contestapp-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: a1234
+    ports:
+      - "5672:5672"   # AMQP 프로토콜
+      - "15672:15672" # 관리 UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - contestapp-network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: contestapp-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@contestapp.com
+      PGADMIN_DEFAULT_PASSWORD: a1234
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - contestapp-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: contestapp-mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: a1234
+      ME_CONFIG_MONGODB_SERVER: contestapp-mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: user
+      ME_CONFIG_BASICAUTH_PASSWORD: a1234
+    ports:
+      - "8091:8081"
+    networks:
+      - contestapp-network
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: contestapp-redis-commander
+    environment:
+      REDIS_HOSTS: local:contestapp-redis:6379
+      HTTP_USER: user
+      HTTP_PASSWORD: a1234
+    ports:
+      - "8092:8081"
+    networks:
+      - contestapp-network
+    depends_on:
+      - redis
+    restart: unless-stopped
+  
+  auth-server:
+    build:
+      context: ./back/auth-server
+      dockerfile: Dockerfile
+    container_name: contestapp-auth-server
+    ports:
+      - "60000:60000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DB_HOST=contestapp-postgres
+      - DB_PORT=5432
+      - DB_NAME=contestapp
+      - DB_USER=user
+      - DB_PASSWORD=a1234
+      - REDIS_HOST=contestapp-redis
+      - REDIS_PORT=6379
+    restart: unless-stopped
+    networks:
+      - contestapp-network
+
+  # 백엔드 서비스들
+  user-service:
+    container_name: contestapp-user-service
+    build:
+      context: ./back/user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./back/user-service:/app
+      - user_service_gradle_cache:/root/.gradle
+    networks:
+      - contestapp-network
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: unless-stopped
+
+  api-gateway:
+    container_name: contestapp-api-gateway
+    build:
+      context: ./back/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./back/api-gateway:/app
+      - api_gateway_nuget_cache:/root/.nuget/packages
+    networks:
+      - contestapp-network
+    depends_on:
+      - user-service
+    restart: unless-stopped
+
+  contest-service:
+    container_name: contestapp-contest-service
+    build:
+      context: ./back/contest-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./back/contest-service:/app
+      - contest_service_gradle_cache:/root/.gradle
+    networks:
+      - contestapp-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  team-service:
+    container_name: contestapp-team-service
+    build:
+      context: ./back/team-service
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./back/team-service:/app
+      - team_service_gradle_cache:/root/.gradle
+    networks:
+      - contestapp-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+
+  ai-service:
+    container_name: contestapp-ai-service
+    build:
+      context: ./back/ai-service
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8087"
+    volumes:
+      - ./back/ai-service:/app
+      - ai_service_gradle_cache:/root/.gradle
+    networks:
+      - contestapp-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  # chat-service:
+  #   container_name: contestapp-chat-service
+  #   build:
+  #     context: ./back/chat_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8085:8085"
+  #   volumes:
+  #     - ./back/chat_service:/app
+  #     - chat_service_rebar3_cache:/root/.cache/rebar3
+  #   networks:
+  #     - contestapp-network
+  #   depends_on:
+  #     - scylladb
+  #     - redis
+  #   environment:
+  #     - PORT=8085
+  #     - REDIS_HOST=contestapp-redis
+  #     - REDIS_PORT=6379
+  #     - SCYLLA_HOST=contestapp-scylladb
+  #     - SCYLLA_PORT=9042
+  #     - JWT_SECRET=contestapp-super-secret-jwt-key-2024-auth-server
+  #   restart: unless-stopped
+
+
+
+  # 다른 백엔드 서비스들은 나중에 추가 예정
+
+networks:
+  contestapp-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:
+  scylladb_data:
+  rabbitmq_data:
+  pgadmin_data:
+  user_service_gradle_cache:
+  api_gateway_nuget_cache:
+  chat_service_rebar3_cache:
+  contest_service_gradle_cache:
+  team_service_gradle_cache:
+  ai_service_gradle_cache:

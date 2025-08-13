@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codebase.backend.post.mapper.PostMapper">
+
+    <!-- 게시글 생성 -->
+    <insert id="insertPost" parameterType="com.codebase.backend.post.dto.PostDTO">
+        INSERT INTO post (topic, title, content, author, createDate, views, likes, dislikes) 
+        VALUES (#{topic}, #{title}, #{content}, #{author}, CURRENT_TIMESTAMP, 0, 0, 0)
+    </insert>
+
+    <!-- 게시글과 태그 연관 생성 -->
+    <insert id="insertPostTags" parameterType="map">
+        INSERT INTO post_tags (post_id, tag_id) 
+        VALUES (#{postId}, #{tagId})
+    </insert>
+
+    <!-- 모든 게시글 조회 -->
+    <select id="selectAllPosts" resultType="com.codebase.backend.post.dto.PostDTO">
+        SELECT id, topic, title, content, author, createDate, views, likes, dislikes
+        FROM post
+    </select>
+
+    <!-- 특정 게시글 조회 -->
+    <select id="selectPostById" parameterType="int" resultType="com.codebase.backend.post.dto.PostDTO">
+        SELECT id, topic, title, content, author, createDate, views, likes, dislikes
+        FROM post WHERE id = #{id}
+    </select>
+    
+    <!-- 게시글 조회수 증가 -->
+    <update id="increaseViews" parameterType="int">
+        UPDATE post SET views = views + 1 WHERE id = #{id}
+    </update>
+    
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM post WHERE id = #{id}
+    </delete>
+    
+    <!-- 게시글 수정 -->
+    <update id="updatePost" parameterType="com.codebase.backend.post.dto.PostDTO">
+        UPDATE post 
+        SET topic = #{topic}, title = #{title}, content = #{content} 
+        WHERE id = #{id}
+    </update>
+
+    <!-- 게시글 좋아요 -->
+    <update id="updateLikes" parameterType="map">
+        UPDATE post SET likes = likes + #{increment} WHERE id = #{id}
+    </update>
+    
+    <!-- 게시글 싫어요 -->
+    <update id="updateDislikes" parameterType="map">
+        UPDATE post SET dislikes = dislikes + #{increment} WHERE id = #{id}
+    </update>
+
+    <!-- 사용자 좋아요 상태 확인 -->
+    <select id="hasUserLiked" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM user_likes WHERE post_id = #{postId} AND user_id = #{userId}
+    </select>
+
+    <!-- 사용자 싫어요 상태 확인 -->
+    <select id="hasUserDisliked" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM user_dislikes WHERE post_id = #{postId} AND user_id = #{userId}
+    </select>
+
+    <!-- 사용자 좋아요 추가 -->
+    <insert id="addUserLike" parameterType="map">
+        INSERT INTO user_likes (post_id, user_id) VALUES (#{postId}, #{userId})
+    </insert>
+
+    <!-- 사용자 싫어요 추가 -->
+    <insert id="addUserDislike" parameterType="map">
+        INSERT INTO user_dislikes (post_id, user_id) VALUES (#{postId}, #{userId})
+    </insert>
+
+    <!-- 사용자 좋아요 제거 -->
+    <delete id="removeUserLike" parameterType="map">
+        DELETE FROM user_likes WHERE post_id = #{postId} AND user_id = #{userId}
+    </delete>
+
+    <!-- 사용자 싫어요 제거 -->
+    <delete id="removeUserDislike" parameterType="map">
+        DELETE FROM user_dislikes WHERE post_id = #{postId} AND user_id = #{userId}
+    </delete>
+
+    <!-- 인기 게시글 차트를 위한 id, 제목, 조회수 select -->
+    <select id="findPopularPosts" resultType="com.codebase.backend.admin.dto.PopularResponse">
+        SELECT id, title, views AS hits FROM post
+        ORDER BY views DESC, id DESC
+        LIMIT 5
+    </select>
+
+
+<!--  멤버 아이디로 게시글찾기  -->
+    <select id="selectPostByAuthor" resultType="com.codebase.backend.post.dto.PostDTO">
+        SELECT *
+        FROM post
+        WHERE author = #{author}
+    </select>
+
+</mapper>

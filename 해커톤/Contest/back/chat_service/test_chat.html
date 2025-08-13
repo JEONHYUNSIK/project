@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Service Test - 실제 인증 시스템</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .success { background: #d1ecf1; color: #0c5460; }
+        .message-log {
+            height: 300px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f8f9fa;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .controls {
+            margin: 10px 0;
+        }
+        button {
+            background: #7C3AED;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #6B2DD8;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .auth-section {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .room-section {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Contest Platform Chat Service - 실제 인증 시스템</h1>
+        
+        <div id="status" class="status disconnected">로그인 필요</div>
+        
+        <!-- 로그인 섹션 -->
+        <div id="loginSection" class="login-section">
+            <h3>🔐 로그인</h3>
+            <div class="grid">
+                <div>
+                    <div class="form-group">
+                        <label for="username">사용자명:</label>
+                        <input type="text" id="username" placeholder="사용자명을 입력하세요" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호:</label>
+                        <input type="password" id="password" placeholder="비밀번호를 입력하세요" />
+                    </div>
+                    <button onclick="login()" class="btn-success">로그인</button>
+                    <button onclick="showRegisterForm()" class="btn-success">회원가입</button>
+                </div>
+                <div>
+                    <h4>테스트 계정:</h4>
+                    <p>사용자명: <code>testuser</code><br>
+                    비밀번호: <code>test1234</code></p>
+                    <button onclick="quickLogin()" class="btn-success">테스트 계정으로 로그인</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 회원가입 섹션 (숨겨져 있음) -->
+        <div id="registerSection" class="login-section hidden">
+            <h3>📝 회원가입</h3>
+            <div class="form-group">
+                <label for="regUsername">사용자명:</label>
+                <input type="text" id="regUsername" placeholder="사용자명 (3자 이상)" />
+            </div>
+            <div class="form-group">
+                <label for="regPassword">비밀번호:</label>
+                <input type="password" id="regPassword" placeholder="비밀번호 (4자 이상)" />
+            </div>
+            <div class="form-group">
+                <label for="regEmail">이메일:</label>
+                <input type="email" id="regEmail" placeholder="이메일 주소" />
+            </div>
+            <button onclick="register()" class="btn-success">회원가입</button>
+            <button onclick="showLoginForm()" class="btn-danger">취소</button>
+        </div>
+        
+        <!-- 로그인 후 사용자 정보 -->
+        <div id="userSection" class="auth-section hidden">
+            <h3>👤 사용자 정보</h3>
+            <div id="userInfo" class="user-info"></div>
+            <button onclick="logout()" class="btn-danger">로그아웃</button>
+            <button onclick="verifyToken()">토큰 검증</button>
+            <button onclick="refreshTokens()" class="btn-warning">토큰 갱신</button>
+        </div>
+        
+        <!-- WebSocket 연결 컨트롤 -->
+        <div id="connectionSection" class="controls hidden">
+            <h3>🔗 WebSocket 연결</h3>
+            <button id="connectBtn" onclick="connect()">채팅 서비스 연결</button>
+            <button id="disconnectBtn" onclick="disconnect()" disabled>연결 끊기</button>
+            <button onclick="sendPing()">Ping 전송</button>
+            <button onclick="clearLog()">로그 클리어</button>
+        </div>
+        
+        <!-- 채팅 기능 -->
+        <div id="chatSection" class="hidden">
+            <div class="grid">
+                <div class="room-section">
+                    <h3>🏠 채팅방 관리</h3>
+                    <div>
+                        <input type="text" id="roomId" placeholder="채팅방 ID" />
+                        <button onclick="joinRoom()">채팅방 입장</button>
+                        <button onclick="leaveRoom()">채팅방 나가기</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>🏠 채팅방 관리</h3>
+                    <div class="room-section">
+                        <div class="form-group">
+                            <label for="roomId">채팅방 ID:</label>
+                            <input type="text" id="roomId" placeholder="채팅방 ID를 입력하세요 (예: room123)" />
+                        </div>
+                        <div class="controls">
+                            <button onclick="joinRoom()" class="btn-success">채팅방 입장</button>
+                            <button onclick="leaveRoom()" class="btn-warning">채팅방 퇴장</button>
+                        </div>
+                        <div id="currentRoom" class="user-info hidden">
+                            현재 채팅방: <span id="currentRoomName">없음</span>
+                        </div>
+                    </div>
+                    
+                    <h3>💬 채팅 메시지</h3>
+                    <div class="form-group">
+                        <input type="text" id="chatMessage" placeholder="채팅 메시지를 입력하세요..." disabled />
+                        <button onclick="sendChatMessage()" disabled id="sendChatBtn">채팅 전송</button>
+                    </div>
+                    
+                    <h3>🧪 테스트 메시지</h3>
+                    <div class="form-group">
+                        <input type="text" id="testMessage" placeholder="테스트 메시지를 입력하세요..." />
+                        <button onclick="sendTestMessage()">테스트 전송</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h3>📋 메시지 로그</h3>
+                <div id="messageLog" class="message-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let currentRoomId = null;
+        let currentUser = null;
+        
+        // API 엔드포인트 설정
+        const AUTH_SERVER_URL = 'http://localhost:60000';
+        const CHAT_SERVICE_URL = 'ws://localhost:8085/chat';
+        const CHAT_HTTP_URL = 'http://localhost:8085';
+        
+        // 로그인 함수
+        async function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                log('사용자명과 비밀번호를 입력해주세요');
+                return;
+            }
+            
+            try {
+                log('로그인 시도 중...');
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', // 쿠키 포함
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                                 const result = await response.text();
+                 
+                 if (response.ok) {
+                     log('로그인 성공!');
+                     try {
+                         const data = JSON.parse(result);
+                         currentUser = data.user;
+                     } catch (e) {
+                         currentUser = { username: username }; // 파싱 실패 시 기본값
+                     }
+                     showUserSection();
+                     updateStatus('로그인 완료 - 채팅 서비스 연결 가능', 'success');
+                 } else {
+                     log('로그인 실패: ' + result);
+                     updateStatus('로그인 실패', 'disconnected');
+                 }
+            } catch (error) {
+                log('로그인 에러: ' + error.message);
+                updateStatus('로그인 에러', 'disconnected');
+            }
+        }
+        
+        // 테스트 계정 로그인
+        async function quickLogin() {
+            document.getElementById('username').value = 'testuser';
+            document.getElementById('password').value = 'test1234';
+            await login();
+        }
+        
+        // 회원가입 함수
+        async function register() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            
+            if (!username || !password || !email) {
+                log('모든 필드를 입력해주세요');
+                return;
+            }
+            
+            try {
+                log('회원가입 시도 중...');
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        email: email
+                    })
+                });
+                
+                                 const result = await response.text();
+                 
+                 if (response.ok) {
+                     log('회원가입 성공! 로그인해주세요.');
+                     showLoginForm();
+                     // 회원가입 성공 시 로그인 폼에 정보 자동 입력
+                     document.getElementById('username').value = username;
+                 } else {
+                     log('회원가입 실패: ' + result);
+                 }
+            } catch (error) {
+                log('회원가입 에러: ' + error.message);
+            }
+        }
+        
+        // 로그아웃 함수
+        async function logout() {
+            try {
+                log('로그아웃 시도 중...');
+                
+                // WebSocket 연결 종료
+                if (ws) {
+                    ws.close();
+                    ws = null;
+                }
+                
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    log('로그아웃 성공');
+                } else {
+                    log('로그아웃 처리 중 오류 발생');
+                }
+            } catch (error) {
+                log('로그아웃 에러: ' + error.message);
+            }
+            
+            // UI 상태 초기화
+            currentUser = null;
+            currentRoomId = null;
+            showLoginForm();
+            updateStatus('로그아웃 완료', 'disconnected');
+        }
+        
+                 // 토큰 검증 함수
+         async function verifyToken() {
+             try {
+                 log('토큰 검증 중...');
+                 const response = await fetch(`${CHAT_HTTP_URL}/verify`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                                 const result = await response.text();
+                 
+                 if (response.ok) {
+                     try {
+                         const data = JSON.parse(result);
+                         if (data.valid) {
+                             log('토큰 검증 성공: ' + JSON.stringify(data.user));
+                             updateStatus('토큰 유효', 'success');
+                         } else {
+                             log('토큰 검증 실패: ' + (data.error || '알 수 없는 오류'));
+                             updateStatus('토큰 무효 - 다시 로그인해주세요', 'disconnected');
+                             showLoginForm();
+                         }
+                     } catch (e) {
+                         log('토큰 검증 응답 파싱 실패: ' + result);
+                         updateStatus('토큰 검증 오류', 'disconnected');
+                     }
+                 } else {
+                     log('토큰 검증 실패: ' + result);
+                     updateStatus('토큰 무효 - 다시 로그인해주세요', 'disconnected');
+                     showLoginForm();
+                 }
+            } catch (error) {
+                log('토큰 검증 에러: ' + error.message);
+                updateStatus('토큰 검증 에러', 'disconnected');
+            }
+        }
+        
+        // 토큰 갱신 함수
+        async function refreshTokens() {
+            try {
+                log('토큰 갱신 중...');
+                updateStatus('토큰 갱신 중...', 'warning');
+                
+                const response = await fetch(`${CHAT_HTTP_URL}/refresh`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    try {
+                        const data = JSON.parse(result);
+                        log('토큰 갱신 성공: ' + data.message);
+                        
+                        if (data.user) {
+                            log('사용자 정보: ' + JSON.stringify(data.user));
+                        }
+                        
+                        updateStatus('토큰 갱신 완료', 'success');
+                        
+                        // 갱신 후 자동으로 토큰 검증
+                        setTimeout(() => {
+                            verifyToken();
+                        }, 500);
+                        
+                    } catch (e) {
+                        log('토큰 갱신 응답 파싱 실패: ' + result);
+                        updateStatus('토큰 갱신 응답 오류', 'disconnected');
+                    }
+                } else {
+                    try {
+                        const errorData = JSON.parse(result);
+                        log('토큰 갱신 실패: ' + (errorData.message || errorData.error || '알 수 없는 오류'));
+                        updateStatus('토큰 갱신 실패 - 다시 로그인해주세요', 'disconnected');
+                        showLoginForm();
+                    } catch (e) {
+                        log('토큰 갱신 실패: ' + result);
+                        updateStatus('토큰 갱신 실패', 'disconnected');
+                        showLoginForm();
+                    }
+                }
+            } catch (error) {
+                log('토큰 갱신 에러: ' + error.message);
+                updateStatus('토큰 갱신 에러', 'disconnected');
+            }
+        }
+        
+        // WebSocket 연결
+        function connect() {
+            if (!currentUser) {
+                log('먼저 로그인해주세요');
+                return;
+            }
+            
+            try {
+                log('채팅 서비스 연결 시도 중...');
+                ws = new WebSocket(CHAT_SERVICE_URL);
+                
+                ws.onopen = function() {
+                    updateConnectionStatus('채팅 서비스 연결됨', true);
+                    log('WebSocket 연결 성공');
+                };
+                
+                ws.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    log('수신: ' + JSON.stringify(data, null, 2));
+                    
+                    // 메시지 타입별 처리
+                    if (data.type === 'connection_established') {
+                        log(`사용자 ${data.user_id}로 연결 완료`);
+                    } else if (data.type === 'room_joined') {
+                        updateRoomStatus(data.room_id);
+                        log(`✅ 채팅방 ${data.room_id}에 입장했습니다`);
+                    } else if (data.type === 'room_left') {
+                        updateRoomStatus(null);
+                        log('👋 채팅방에서 나갔습니다');
+                    } else if (data.type === 'user_joined') {
+                        log(`👤 ${data.user_id}님이 채팅방에 입장했습니다`);
+                    } else if (data.type === 'user_left') {
+                        log(`👤 ${data.user_id}님이 채팅방에서 나갔습니다`);
+                    } else if (data.type === 'chat_message') {
+                        log(`💬 [${data.sender_id}]: ${data.content}`);
+                    } else if (data.type === 'message_sent') {
+                        log(`✅ 메시지 전송 완료`);
+                    } else if (data.error) {
+                        log('❌ 에러: ' + data.message);
+                    }
+                };
+                
+                ws.onclose = function() {
+                    updateConnectionStatus('채팅 서비스 연결 끊김', false);
+                    log('WebSocket 연결 종료');
+                    currentRoomId = null;
+                };
+                
+                ws.onerror = function(error) {
+                    log('WebSocket 에러: ' + error);
+                    updateConnectionStatus('채팅 서비스 연결 에러', false);
+                };
+                
+            } catch (error) {
+                log('연결 에러: ' + error);
+            }
+        }
+        
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+        }
+        
+        // 메시지 전송 함수들
+        function sendPing() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = {
+                    type: 'ping',
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(message));
+                log('전송: ' + JSON.stringify(message));
+            } else {
+                log('WebSocket이 연결되지 않았습니다.');
+            }
+        }
+        
+        function joinRoom() {
+            const roomId = document.getElementById('roomId').value.trim();
+            if (!roomId) {
+                log('채팅방 ID를 입력해주세요');
+                return;
+            }
+            
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = {
+                    type: 'join_room',
+                    room_id: roomId,
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(message));
+                log('전송: ' + JSON.stringify(message));
+            } else {
+                log('WebSocket이 연결되지 않았습니다.');
+            }
+        }
+        
+        function leaveRoom() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = {
+                    type: 'leave_room',
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(message));
+                log('전송: ' + JSON.stringify(message));
+            } else {
+                log('WebSocket이 연결되지 않았습니다.');
+            }
+        }
+        
+        function sendTestMessage() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const messageInput = document.getElementById('testMessage');
+                const message = {
+                    type: 'test_message',
+                    content: messageInput.value,
+                    room_id: currentRoomId,
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(message));
+                log('전송: ' + JSON.stringify(message));
+                messageInput.value = '';
+            } else {
+                log('WebSocket이 연결되지 않았습니다.');
+            }
+        }
+        
+        // 채팅 메시지 전송
+        function sendChatMessage() {
+            const messageInput = document.getElementById('chatMessage');
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                log('채팅 메시지를 입력해주세요');
+                return;
+            }
+            
+            if (!currentRoomId) {
+                log('채팅방에 먼저 입장해주세요');
+                return;
+            }
+            
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const chatMsg = {
+                    type: 'chat_message',
+                    content: message,
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(chatMsg));
+                log('전송: ' + JSON.stringify(chatMsg));
+                messageInput.value = '';
+            } else {
+                log('WebSocket이 연결되지 않았습니다.');
+            }
+        }
+        
+        // 채팅방 상태 업데이트
+        function updateRoomStatus(roomId) {
+            currentRoomId = roomId;
+            
+            if (roomId) {
+                document.getElementById('currentRoomName').textContent = roomId;
+                document.getElementById('currentRoom').classList.remove('hidden');
+                document.getElementById('chatMessage').disabled = false;
+                document.getElementById('sendChatBtn').disabled = false;
+                log(`📍 현재 채팅방: ${roomId}`);
+            } else {
+                document.getElementById('currentRoomName').textContent = '없음';
+                document.getElementById('currentRoom').classList.add('hidden');
+                document.getElementById('chatMessage').disabled = true;
+                document.getElementById('sendChatBtn').disabled = true;
+                log('📍 채팅방에서 나감');
+            }
+        }
+        
+        // UI 관리 함수들
+        function showLoginForm() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('registerSection').classList.add('hidden');
+            document.getElementById('userSection').classList.add('hidden');
+            document.getElementById('connectionSection').classList.add('hidden');
+            document.getElementById('chatSection').classList.add('hidden');
+        }
+        
+        function showRegisterForm() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.remove('hidden');
+        }
+        
+        function showUserSection() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.add('hidden');
+            document.getElementById('userSection').classList.remove('hidden');
+            document.getElementById('connectionSection').classList.remove('hidden');
+            document.getElementById('chatSection').classList.remove('hidden');
+            
+            // 사용자 정보 표시
+            if (currentUser) {
+                document.getElementById('userInfo').innerHTML = `
+                    <strong>ID:</strong> ${currentUser.id}<br>
+                    <strong>사용자명:</strong> ${currentUser.username}<br>
+                    <strong>이메일:</strong> ${currentUser.email}
+                `;
+            }
+        }
+        
+        function updateStatus(text, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = text;
+            statusEl.className = `status ${type}`;
+        }
+        
+        function updateConnectionStatus(text, connected) {
+            const connectBtn = document.getElementById('connectBtn');
+            const disconnectBtn = document.getElementById('disconnectBtn');
+            
+            connectBtn.disabled = connected;
+            disconnectBtn.disabled = !connected;
+            
+            if (connected) {
+                updateStatus(text, 'connected');
+            } else {
+                updateStatus(text, 'warning');
+            }
+        }
+        
+        function log(message) {
+            const logEl = document.getElementById('messageLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logEl.innerHTML += `[${timestamp}] ${message}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('messageLog').innerHTML = '';
+        }
+        
+        // 페이지 로드 시 토큰 확인
+        window.onload = async function() {
+            log('페이지 로드 완료');
+            
+                         // 기존 토큰이 있는지 확인
+             try {
+                 const response = await fetch(`${CHAT_HTTP_URL}/verify`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                                 const result = await response.text();
+                 
+                 if (response.ok) {
+                     try {
+                         const data = JSON.parse(result);
+                         if (data.valid) {
+                             log('기존 로그인 세션 발견');
+                             currentUser = data.user;
+                             showUserSection();
+                             updateStatus('로그인 상태 - 채팅 서비스 연결 가능', 'success');
+                         } else {
+                             log('로그인이 필요합니다');
+                             showLoginForm();
+                         }
+                     } catch (e) {
+                         log('로그인이 필요합니다');
+                         showLoginForm();
+                     }
+                 } else {
+                     log('로그인이 필요합니다');
+                     showLoginForm();
+                 }
+            } catch (error) {
+                log('세션 확인 중 오류: ' + error.message);
+                showLoginForm();
+            }
+        };
+        
+        // Enter 키 이벤트 처리
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const target = event.target;
+                
+                if (target.id === 'password') {
+                    login();
+                } else if (target.id === 'regEmail') {
+                    register();
+                } else if (target.id === 'testMessage') {
+                    sendTestMessage();
+                } else if (target.id === 'chatMessage') {
+                    sendChatMessage();
+                } else if (target.id === 'roomId') {
+                    joinRoom();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

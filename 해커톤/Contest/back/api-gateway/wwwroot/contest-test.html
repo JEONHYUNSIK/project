@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contest Service Test - 대회 서비스 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .success { background: #d1ecf1; color: #0c5460; }
+        .message-log {
+            height: 300px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f8f9fa;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .controls {
+            margin: 10px 0;
+        }
+        button {
+            background: #7C3AED;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #6B2DD8;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .api-section {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .contest-section {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .contest-item {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .contest-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .contest-meta {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .pagination button {
+            margin: 0 5px;
+        }
+        .filters {
+            background: #f8f9fa;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+        .filter-row > div {
+            flex: 1;
+        }
+        .json-display {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Contest Service Test - 대회 서비스 테스트</h1>
+        
+        <div id="status" class="status disconnected">로그인 필요</div>
+        
+        <!-- 로그인 섹션 -->
+        <div id="loginSection" class="login-section">
+            <h3>🔐 로그인</h3>
+            <div class="grid">
+                <div>
+                    <div class="form-group">
+                        <label for="username">사용자명:</label>
+                        <input type="text" id="username" placeholder="사용자명을 입력하세요" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호:</label>
+                        <input type="password" id="password" placeholder="비밀번호를 입력하세요" />
+                    </div>
+                    <button onclick="login()" class="btn-success">로그인</button>
+                    <button onclick="showRegisterForm()" class="btn-success">회원가입</button>
+                </div>
+                <div>
+                    <h4>테스트 계정:</h4>
+                    <p>사용자명: <code>testuser</code><br>
+                    비밀번호: <code>test1234</code></p>
+                    <button onclick="quickLogin()" class="btn-success">테스트 계정으로 로그인</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 회원가입 섹션 (숨겨져 있음) -->
+        <div id="registerSection" class="login-section hidden">
+            <h3>📝 회원가입</h3>
+            <div class="form-group">
+                <label for="regUsername">사용자명:</label>
+                <input type="text" id="regUsername" placeholder="사용자명 (3자 이상)" />
+            </div>
+            <div class="form-group">
+                <label for="regPassword">비밀번호:</label>
+                <input type="password" id="regPassword" placeholder="비밀번호 (4자 이상)" />
+            </div>
+            <div class="form-group">
+                <label for="regEmail">이메일:</label>
+                <input type="email" id="regEmail" placeholder="이메일 주소" />
+            </div>
+            <button onclick="register()" class="btn-success">회원가입</button>
+            <button onclick="showLoginForm()" class="btn-danger">취소</button>
+        </div>
+        
+        <!-- 로그인 후 사용자 정보 -->
+        <div id="userSection" class="api-section hidden">
+            <h3>👤 사용자 정보</h3>
+            <div id="userInfo" class="user-info"></div>
+            <button onclick="logout()" class="btn-danger">로그아웃</button>
+            <button onclick="verifyToken()">토큰 검증</button>
+        </div>
+        
+        <!-- Contest API 테스트 섹션 -->
+        <div id="contestSection" class="hidden">
+            <!-- 필터 섹션 -->
+            <div class="contest-section">
+                <h3>🔍 대회 목록 필터</h3>
+                <div class="filters">
+                    <div class="filter-row">
+
+                        <div>
+                            <label for="categoryFilter">카테고리 ID:</label>
+                            <input type="number" id="categoryFilter" placeholder="카테고리 ID (1:IT, 2:디자인, 4:창업, 5:과학, 7:사회공헌)" />
+                        </div>
+                        <div>
+                            <label for="keywordFilter">키워드:</label>
+                            <input type="text" id="keywordFilter" placeholder="제목, 설명, 주최자 검색" />
+                        </div>
+                        <div>
+                            <label>&nbsp;</label>
+                            <button onclick="loadContests()" class="btn-success">대회 목록 조회</button>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div>
+                            <label for="pageSize">페이지 크기:</label>
+                            <select id="pageSize">
+                                <option value="5">5개</option>
+                                <option value="10" selected>10개</option>
+                                <option value="20">20개</option>
+                                <option value="50">50개</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sortBy">정렬 기준:</label>
+                            <select id="sortBy">
+                                <option value="createdAt">생성일자</option>
+                                <option value="title">제목</option>
+                                <option value="startDate">시작일</option>
+                                <option value="applicationDeadline">마감일</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sortDir">정렬 방향:</label>
+                            <select id="sortDir">
+                                <option value="desc" selected>내림차순</option>
+                                <option value="asc">오름차순</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>&nbsp;</label>
+                            <button onclick="clearFilters()" class="btn-warning">필터 초기화</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API 테스트 버튼들 -->
+            <div class="api-section">
+                <h3>🧪 API 테스트</h3>
+                <div class="controls">
+                    <button onclick="testContestService()" class="btn-success">Contest Service 연결 테스트</button>
+                    <button onclick="loadContests()">대회 목록 조회</button>
+                    <button onclick="testGetContestById()" class="btn-warning">특정 대회 조회 테스트</button>
+                    <button onclick="clearLog()">로그 클리어</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contestIdInput">대회 ID (상세 조회용):</label>
+                    <input type="text" id="contestIdInput" placeholder="대회 ID를 입력하세요 (예: 10000000-0000-0000-0000-000000000001)" />
+                    <button onclick="getContestById()">대회 상세 조회</button>
+                </div>
+            </div>
+            
+            <!-- 대회 목록 표시 -->
+            <div class="contest-section">
+                <h3>📋 대회 목록</h3>
+                <div id="contestList"></div>
+                
+                <!-- 페이징 컨트롤 -->
+                <div id="paginationControls" class="pagination hidden">
+                    <button onclick="goToPage(currentPage - 1)">이전</button>
+                    <span id="pageInfo">페이지 정보</span>
+                    <button onclick="goToPage(currentPage + 1)">다음</button>
+                </div>
+            </div>
+            
+            <!-- JSON 응답 표시 -->
+            <div class="api-section">
+                <h3>📄 최근 API 응답 (JSON)</h3>
+                <div id="jsonResponse" class="json-display">API 호출 후 응답이 여기에 표시됩니다.</div>
+            </div>
+            
+            <!-- 로그 표시 -->
+            <div class="api-section">
+                <h3>📋 API 호출 로그</h3>
+                <div id="messageLog" class="message-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentPage = 0;
+        let totalPages = 0;
+        let lastContestData = null;
+        
+        // API 엔드포인트 설정
+        const AUTH_SERVER_URL = 'http://localhost:60000';
+        const API_GATEWAY_URL = 'http://localhost:8080';
+        
+        // 로그인 함수
+        async function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                log('사용자명과 비밀번호를 입력해주세요');
+                return;
+            }
+            
+            try {
+                log('로그인 시도 중...');
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    log('로그인 성공!');
+                    try {
+                        const data = JSON.parse(result);
+                        currentUser = data.user;
+                    } catch (e) {
+                        currentUser = { username: username };
+                    }
+                    showUserSection();
+                    updateStatus('로그인 완료 - Contest API 테스트 가능', 'success');
+                } else {
+                    log('로그인 실패: ' + result);
+                    updateStatus('로그인 실패', 'disconnected');
+                }
+            } catch (error) {
+                log('로그인 에러: ' + error.message);
+                updateStatus('로그인 에러', 'disconnected');
+            }
+        }
+        
+        // 테스트 계정 로그인
+        async function quickLogin() {
+            document.getElementById('username').value = 'testuser';
+            document.getElementById('password').value = 'test1234';
+            await login();
+        }
+        
+        // 회원가입 함수
+        async function register() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            
+            if (!username || !password || !email) {
+                log('모든 필드를 입력해주세요');
+                return;
+            }
+            
+            try {
+                log('회원가입 시도 중...');
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        email: email
+                    })
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    log('회원가입 성공! 로그인해주세요.');
+                    showLoginForm();
+                    document.getElementById('username').value = username;
+                } else {
+                    log('회원가입 실패: ' + result);
+                }
+            } catch (error) {
+                log('회원가입 에러: ' + error.message);
+            }
+        }
+        
+        // 로그아웃 함수
+        async function logout() {
+            try {
+                log('로그아웃 시도 중...');
+                
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    log('로그아웃 성공');
+                } else {
+                    log('로그아웃 처리 중 오류 발생');
+                }
+            } catch (error) {
+                log('로그아웃 에러: ' + error.message);
+            }
+            
+            currentUser = null;
+            showLoginForm();
+            updateStatus('로그아웃 완료', 'disconnected');
+        }
+        
+        // 토큰 검증 함수
+        async function verifyToken() {
+            try {
+                log('토큰 검증 중...');
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/verify`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    try {
+                        const data = JSON.parse(result);
+                        if (data.valid) {
+                            log('토큰 검증 성공: ' + JSON.stringify(data.user));
+                            updateStatus('토큰 유효', 'success');
+                        } else {
+                            log('토큰 검증 실패: ' + (data.error || '알 수 없는 오류'));
+                            updateStatus('토큰 무효 - 다시 로그인해주세요', 'disconnected');
+                            showLoginForm();
+                        }
+                    } catch (e) {
+                        log('토큰 검증 응답 파싱 실패: ' + result);
+                        updateStatus('토큰 검증 오류', 'disconnected');
+                    }
+                } else {
+                    log('토큰 검증 실패: ' + result);
+                    updateStatus('토큰 무효 - 다시 로그인해주세요', 'disconnected');
+                    showLoginForm();
+                }
+            } catch (error) {
+                log('토큰 검증 에러: ' + error.message);
+                updateStatus('토큰 검증 에러', 'disconnected');
+            }
+        }
+        
+        // Contest Service 연결 테스트
+        async function testContestService() {
+            try {
+                log('Contest Service 연결 테스트 중...');
+                const response = await fetch(`${API_GATEWAY_URL}/api/contests/test`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    log('✅ Contest Service 연결 성공: ' + result);
+                    updateStatus('Contest Service 연결됨', 'success');
+                } else {
+                    log('❌ Contest Service 연결 실패: ' + result);
+                    updateStatus('Contest Service 연결 실패', 'warning');
+                }
+            } catch (error) {
+                log('❌ Contest Service 연결 에러: ' + error.message);
+                updateStatus('Contest Service 연결 에러', 'disconnected');
+            }
+        }
+        
+        // 대회 목록 조회
+        async function loadContests() {
+            if (!currentUser) {
+                log('먼저 로그인해주세요');
+                return;
+            }
+            
+            try {
+                // 필터 값들 가져오기
+                const category = document.getElementById('categoryFilter').value;
+                const keyword = document.getElementById('keywordFilter').value;
+                const pageSize = document.getElementById('pageSize').value;
+                const sortBy = document.getElementById('sortBy').value;
+                const sortDir = document.getElementById('sortDir').value;
+                
+                // 쿼리 파라미터 구성
+                const params = new URLSearchParams();
+                params.append('page', currentPage);
+                params.append('size', pageSize);
+                params.append('sortBy', sortBy);
+                params.append('sortDir', sortDir);
+                
+                if (category) params.append('category', category);
+                if (keyword) params.append('keyword', keyword);
+                
+                const url = `${API_GATEWAY_URL}/api/contests?${params.toString()}`;
+                log(`대회 목록 조회 중... ${url}`);
+                
+                const response = await fetch(url, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    const data = JSON.parse(result);
+                    lastContestData = data;
+                    totalPages = data.totalPages;
+                    
+                    log(`✅ 대회 목록 조회 성공: ${data.totalElements}개 대회 found`);
+                    displayContests(data);
+                    displayJsonResponse(result);
+                    updatePagination();
+                    updateStatus(`대회 목록 조회 완료 (페이지 ${currentPage + 1}/${totalPages})`, 'success');
+                } else {
+                    log('❌ 대회 목록 조회 실패: ' + result);
+                    updateStatus('대회 목록 조회 실패', 'warning');
+                }
+            } catch (error) {
+                log('❌ 대회 목록 조회 에러: ' + error.message);
+                updateStatus('대회 목록 조회 에러', 'disconnected');
+            }
+        }
+        
+        // 특정 대회 상세 조회
+        async function getContestById() {
+            const contestId = document.getElementById('contestIdInput').value.trim();
+            
+            if (!contestId) {
+                log('대회 ID를 입력해주세요');
+                return;
+            }
+            
+            try {
+                log(`대회 상세 조회 중... ID: ${contestId}`);
+                const response = await fetch(`${API_GATEWAY_URL}/api/contests/${contestId}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    const data = JSON.parse(result);
+                    log(`✅ 대회 상세 조회 성공: ${data.title}`);
+                    displaySingleContest(data);
+                    displayJsonResponse(result);
+                    updateStatus(`대회 상세 조회 완료: ${data.title}`, 'success');
+                } else {
+                    log('❌ 대회 상세 조회 실패: ' + result);
+                    updateStatus('대회 상세 조회 실패', 'warning');
+                }
+            } catch (error) {
+                log('❌ 대회 상세 조회 에러: ' + error.message);
+                updateStatus('대회 상세 조회 에러', 'disconnected');
+            }
+        }
+        
+        // 테스트용 대회 상세 조회
+        async function testGetContestById() {
+            document.getElementById('contestIdInput').value = '00000000-0000-0000-0000-000000000001';
+            await getContestById();
+        }
+        
+        // 대회 목록 표시
+        function displayContests(data) {
+            const contestList = document.getElementById('contestList');
+            
+            if (!data.content || data.content.length === 0) {
+                contestList.innerHTML = '<p>조회된 대회가 없습니다.</p>';
+                return;
+            }
+            
+            let html = '';
+            data.content.forEach(contest => {
+                const categoriesText = contest.categories ? contest.categories.map(cat => cat.name).join(', ') : '카테고리 없음';
+                html += `
+                    <div class="contest-item">
+                        <div class="contest-title">${contest.title}</div>
+                        <div class="contest-meta">
+                            주최: ${contest.organizer} | 
+                            활성: ${contest.isActive ? '✅' : '❌'}
+                        </div>
+                        <div class="contest-meta">
+                            📅 ${contest.startDate.split('T')[0]} ~ ${contest.endDate.split('T')[0]} | 
+                            ⏰ 마감: ${contest.registrationDeadline ? contest.registrationDeadline.split('T')[0] : '미정'}
+                        </div>
+                        <div class="contest-meta">
+                            ${contest.description ? contest.description.substring(0, 100) + '...' : '설명 없음'}
+                        </div>
+                        <div class="contest-meta">📂 카테고리: ${categoriesText}</div>
+                        <div class="contest-meta">
+                            <button onclick="showContestDetails('${contest.id}')" class="btn-success">상세보기</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            contestList.innerHTML = html;
+        }
+        
+        // 단일 대회 표시
+        function displaySingleContest(contest) {
+            const contestList = document.getElementById('contestList');
+            const categoriesText = contest.categories ? contest.categories.map(cat => cat.name).join(', ') : '카테고리 없음';
+            
+            contestList.innerHTML = `
+                <div class="contest-item">
+                    <div class="contest-title">${contest.title}</div>
+                    <div class="contest-meta">
+                        주최: ${contest.organizer} | 
+                        활성: ${contest.isActive ? '✅ 활성' : '❌ 비활성'}
+                    </div>
+                    <div class="contest-meta">
+                        📅 시작일: ${contest.startDate.split('T')[0]} | 종료일: ${contest.endDate.split('T')[0]}
+                    </div>
+                    <div class="contest-meta">
+                        ⏰ 신청 마감: ${contest.registrationDeadline ? contest.registrationDeadline.split('T')[0] : '미정'}
+                    </div>
+                    ${contest.websiteUrl ? `<div class="contest-meta">🌐 웹사이트: <a href="${contest.websiteUrl}" target="_blank">${contest.websiteUrl}</a></div>` : ''}
+                    <div class="contest-meta">📂 카테고리: ${categoriesText}</div>
+                    <div class="contest-meta">${contest.description || '설명 없음'}</div>
+                    ${contest.prizeDescription ? `<div class="contest-meta">🏆 상금/혜택: ${contest.prizeDescription}</div>` : ''}
+                    ${contest.requirements ? `<div class="contest-meta">📋 참가 요건: ${contest.requirements}</div>` : ''}
+                    ${contest.imageUrl ? `<div class="contest-meta">🖼️ 이미지: <a href="${contest.imageUrl}" target="_blank">보기</a></div>` : ''}
+                </div>
+            `;
+        }
+        
+        // 대회 상세보기
+        function showContestDetails(contestId) {
+            document.getElementById('contestIdInput').value = contestId;
+            getContestById();
+        }
+        
+
+        
+        // 페이징 처리
+        function goToPage(page) {
+            if (page < 0 || page >= totalPages) return;
+            currentPage = page;
+            loadContests();
+        }
+        
+        function updatePagination() {
+            const paginationControls = document.getElementById('paginationControls');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            if (totalPages > 1) {
+                paginationControls.classList.remove('hidden');
+                pageInfo.textContent = `${currentPage + 1} / ${totalPages}`;
+            } else {
+                paginationControls.classList.add('hidden');
+            }
+        }
+        
+        // 필터 초기화
+        function clearFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('keywordFilter').value = '';
+            document.getElementById('pageSize').value = '10';
+            document.getElementById('sortBy').value = 'createdAt';
+            document.getElementById('sortDir').value = 'desc';
+            currentPage = 0;
+            log('필터가 초기화되었습니다');
+        }
+        
+        // JSON 응답 표시
+        function displayJsonResponse(jsonString) {
+            const jsonResponse = document.getElementById('jsonResponse');
+            try {
+                const formatted = JSON.stringify(JSON.parse(jsonString), null, 2);
+                jsonResponse.textContent = formatted;
+            } catch (e) {
+                jsonResponse.textContent = jsonString;
+            }
+        }
+        
+        // UI 관리 함수들
+        function showLoginForm() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('registerSection').classList.add('hidden');
+            document.getElementById('userSection').classList.add('hidden');
+            document.getElementById('contestSection').classList.add('hidden');
+        }
+        
+        function showRegisterForm() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.remove('hidden');
+        }
+        
+        function showUserSection() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.add('hidden');
+            document.getElementById('userSection').classList.remove('hidden');
+            document.getElementById('contestSection').classList.remove('hidden');
+            
+            if (currentUser) {
+                document.getElementById('userInfo').innerHTML = `
+                    <strong>ID:</strong> ${currentUser.id || 'N/A'}<br>
+                    <strong>사용자명:</strong> ${currentUser.username}<br>
+                    <strong>이메일:</strong> ${currentUser.email || 'N/A'}
+                `;
+            }
+        }
+        
+        function updateStatus(text, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = text;
+            statusEl.className = `status ${type}`;
+        }
+        
+        function log(message) {
+            const logEl = document.getElementById('messageLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logEl.innerHTML += `[${timestamp}] ${message}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('messageLog').innerHTML = '';
+        }
+        
+        // 페이지 로드 시 토큰 확인
+        window.onload = async function() {
+            log('Contest Service 테스트 페이지 로드 완료');
+            
+            try {
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/verify`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    try {
+                        const data = JSON.parse(result);
+                        if (data.valid) {
+                            log('기존 로그인 세션 발견');
+                            currentUser = data.user;
+                            showUserSection();
+                            updateStatus('로그인 상태 - Contest API 테스트 가능', 'success');
+                            
+                            // 자동으로 대회 목록 로드
+                            setTimeout(() => {
+                                loadContests();
+                            }, 1000);
+                        } else {
+                            log('로그인이 필요합니다');
+                            showLoginForm();
+                        }
+                    } catch (e) {
+                        log('로그인이 필요합니다');
+                        showLoginForm();
+                    }
+                } else {
+                    log('로그인이 필요합니다');
+                    showLoginForm();
+                }
+            } catch (error) {
+                log('세션 확인 중 오류: ' + error.message);
+                showLoginForm();
+            }
+        };
+        
+        // Enter 키 이벤트 처리
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const target = event.target;
+                
+                if (target.id === 'password') {
+                    login();
+                } else if (target.id === 'regEmail') {
+                    register();
+                } else if (target.id === 'contestIdInput') {
+                    getContestById();
+                } else if (target.id === 'keywordFilter') {
+                    loadContests();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

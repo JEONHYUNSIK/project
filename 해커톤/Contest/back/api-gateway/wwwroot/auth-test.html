@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContestPlatform - 인증 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .section h2 {
+            color: #7C3AED;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: #f9fafb;
+            min-height: 44px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #7C3AED;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 44px;
+            min-width: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .response-box {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .auth-status {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-status.authenticated {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #047857;
+        }
+
+        .auth-status.unauthenticated {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .endpoints {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .endpoint-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .endpoint-card h4 {
+            color: #7C3AED;
+            margin-bottom: 0.5rem;
+        }
+
+        .endpoint-card p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ContestPlatform</h1>
+            <p>JWT 기반 인증 시스템 테스트</p>
+        </div>
+
+        <div class="auth-status" id="authStatus">
+            <div id="authStatusText">인증 상태 확인 중...</div>
+        </div>
+
+        <!-- 1. 회원가입 섹션 -->
+        <div class="section">
+            <h2><span class="icon">📝</span> 1. 회원가입 (Auth Server)</h2>
+            <div class="form-group">
+                <label for="signupUsername">사용자명</label>
+                <input type="text" id="signupUsername" placeholder="사용자명">
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">이메일</label>
+                <input type="email" id="signupEmail" placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">비밀번호</label>
+                <input type="password" id="signupPassword" placeholder="비밀번호">
+            </div>
+            <button class="btn" onclick="signup()">
+                <span class="icon">📝</span> 회원가입
+            </button>
+            <div id="signupStatus"></div>
+            <div id="signupResponse" class="response-box hidden"></div>
+        </div>
+
+        <!-- 2. 로그인 섹션 -->
+        <div class="section">
+            <h2><span class="icon">🔐</span> 2. 로그인 (Auth Server)</h2>
+            <div class="form-group">
+                <label for="loginUsername">사용자명</label>
+                <input type="text" id="loginUsername" placeholder="사용자명">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">비밀번호</label>
+                <input type="password" id="loginPassword" placeholder="비밀번호">
+            </div>
+            <button class="btn" onclick="login()">
+                <span class="icon">🔑</span> 로그인
+            </button>
+            <div id="loginStatus"></div>
+            <div id="loginResponse" class="response-box hidden"></div>
+        </div>
+
+        <!-- 3. 사용자 정보 조회 섹션 -->
+        <div class="section">
+            <h2><span class="icon">👤</span> 3. 사용자 정보 조회 (API Gateway → User Service)</h2>
+            <div class="endpoints">
+                <div class="endpoint-card">
+                    <h4>내 정보</h4>
+                    <p>현재 로그인한 사용자 정보</p>
+                    <button class="btn" onclick="getCurrentUser()">
+                        <span class="icon">🔍</span> 조회
+                    </button>
+                </div>
+                <div class="endpoint-card">
+                    <h4>테스트 API</h4>
+                    <p>연결 테스트용 엔드포인트</p>
+                    <button class="btn btn-secondary" onclick="testAsdf()">
+                        <span class="icon">🧪</span> 테스트
+                    </button>
+                </div>
+            </div>
+            <div id="userInfoStatus"></div>
+            <div id="userInfoResponse" class="response-box hidden"></div>
+        </div>
+
+        <!-- 4. 프로필 관리 섹션 -->
+        <div class="section">
+            <h2><span class="icon">📝</span> 4. 프로필 관리</h2>
+            <div class="grid">
+                <div>
+                    <h3>프로필 조회</h3>
+                    <button class="btn" onclick="getMyProfile()">
+                        <span class="icon">👁️</span> 내 프로필 조회
+                    </button>
+                </div>
+                <div>
+                    <h3>프로필 수정</h3>
+                    <div class="form-group">
+                        <label for="fullName">이름</label>
+                        <input type="text" id="fullName" placeholder="홍길동">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">자기소개</label>
+                        <textarea id="bio" placeholder="안녕하세요!" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="education">학력</label>
+                        <input type="text" id="education" placeholder="○○대학교 컴퓨터과학과">
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">경력</label>
+                        <input type="text" id="experience" placeholder="Frontend Developer 3년">
+                    </div>
+                    <button class="btn" onclick="updateProfile()">
+                        <span class="icon">💾</span> 프로필 수정
+                    </button>
+                </div>
+            </div>
+            <div id="profileStatus"></div>
+            <div id="profileResponse" class="response-box hidden"></div>
+        </div>
+
+        <!-- 5. 사용자 검색 섹션 -->
+        <div class="section">
+            <h2><span class="icon">🔍</span> 5. 사용자 검색</h2>
+            <div class="form-group">
+                <label for="searchEmail">검색할 이메일</label>
+                <input type="email" id="searchEmail" placeholder="search@example.com">
+            </div>
+            <button class="btn" onclick="searchUser()">
+                <span class="icon">🔍</span> 사용자 검색
+            </button>
+            <div id="searchStatus"></div>
+            <div id="searchResponse" class="response-box hidden"></div>
+        </div>
+
+        <!-- 6. 로그아웃 섹션 -->
+        <div class="section">
+            <h2><span class="icon">🚪</span> 6. 로그아웃</h2>
+            <button class="btn btn-secondary" onclick="logout()">
+                <span class="icon">👋</span> 로그아웃
+            </button>
+            <div id="logoutStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        // 설정
+        const AUTH_SERVER_URL = 'http://localhost:60000'; // auth-server 직접 호출
+        const API_GATEWAY_URL = 'http://localhost:8080'; // api-gateway 호출
+
+        // 페이지 로드 시 인증 상태 확인
+        window.onload = function() {
+            checkAuthStatus();
+        };
+
+        // 인증 상태 확인
+        function checkAuthStatus() {
+            const authStatus = document.getElementById('authStatus');
+            const authStatusText = document.getElementById('authStatusText');
+            
+            // 쿠키에서 JWT 확인
+            const hasJwt = document.cookie.includes('auth_token=');
+            
+            if (hasJwt) {
+                authStatus.className = 'auth-status authenticated';
+                authStatusText.textContent = '✅ 인증됨 (JWT 토큰 존재)';
+            } else {
+                authStatus.className = 'auth-status unauthenticated';
+                authStatusText.textContent = '❌ 인증되지 않음 (로그인 필요)';
+            }
+        }
+
+        // 1. 회원가입 (Auth Server 직접 호출)
+        async function signup() {
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const statusDiv = document.getElementById('signupStatus');
+            const responseDiv = document.getElementById('signupResponse');
+
+            if (!username || !email || !password) {
+                showStatus(statusDiv, '사용자명, 이메일, 비밀번호를 모두 입력해주세요.', 'error');
+                return;
+            }
+
+            showStatus(statusDiv, '회원가입 중...', 'info');
+            
+            try {
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', // 쿠키 포함
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 회원가입 성공! 이제 로그인할 수 있습니다.', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                    
+                    // 회원가입 성공 시 로그인 폼에 사용자명 자동 입력
+                    document.getElementById('loginUsername').value = username;
+                    document.getElementById('loginPassword').value = password;
+                } else {
+                    showStatus(statusDiv, `❌ 회원가입 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 2. 로그인 (Auth Server 직접 호출)
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const statusDiv = document.getElementById('loginStatus');
+            const responseDiv = document.getElementById('loginResponse');
+
+            if (!username || !password) {
+                showStatus(statusDiv, '사용자명과 비밀번호를 입력해주세요.', 'error');
+                return;
+            }
+
+            showStatus(statusDiv, '로그인 중...', 'info');
+            
+            try {
+                const response = await fetch(`${AUTH_SERVER_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', // 쿠키 포함
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 로그인 성공! JWT 토큰이 쿠키에 저장되었습니다.', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                    checkAuthStatus(); // 인증 상태 업데이트
+                } else {
+                    showStatus(statusDiv, `❌ 로그인 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 3. 현재 사용자 정보 조회 (API Gateway → User Service)
+        async function getCurrentUser() {
+            const statusDiv = document.getElementById('userInfoStatus');
+            const responseDiv = document.getElementById('userInfoResponse');
+
+            showStatus(statusDiv, '사용자 정보 조회 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_GATEWAY_URL}/api/users/me`, {
+                    method: 'GET',
+                    credentials: 'include' // JWT 쿠키 포함
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 사용자 정보 조회 성공', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                } else {
+                    showStatus(statusDiv, `❌ 사용자 정보 조회 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 4. 테스트 API 호출
+        async function testAsdf() {
+            const statusDiv = document.getElementById('userInfoStatus');
+            const responseDiv = document.getElementById('userInfoResponse');
+
+            showStatus(statusDiv, '테스트 API 호출 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_GATEWAY_URL}/api/users/asdf`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 테스트 API 호출 성공', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                } else {
+                    showStatus(statusDiv, `❌ 테스트 API 호출 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 5. 내 프로필 조회
+        async function getMyProfile() {
+            const statusDiv = document.getElementById('profileStatus');
+            const responseDiv = document.getElementById('profileResponse');
+
+            showStatus(statusDiv, '프로필 조회 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_GATEWAY_URL}/api/users/me/profile`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 프로필 조회 성공', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                    
+                    // 프로필 정보를 폼에 자동 입력
+                    try {
+                        const profileData = JSON.parse(result);
+                        document.getElementById('fullName').value = profileData.full_name || '';
+                        document.getElementById('bio').value = profileData.bio || '';
+                        document.getElementById('education').value = profileData.education || '';
+                        document.getElementById('experience').value = profileData.experience || '';
+                    } catch (e) {
+                        console.log('프로필 데이터 파싱 실패:', e);
+                    }
+                } else {
+                    showStatus(statusDiv, `❌ 프로필 조회 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 6. 프로필 수정
+        async function updateProfile() {
+            const fullName = document.getElementById('fullName').value;
+            const bio = document.getElementById('bio').value;
+            const education = document.getElementById('education').value;
+            const experience = document.getElementById('experience').value;
+            const statusDiv = document.getElementById('profileStatus');
+            const responseDiv = document.getElementById('profileResponse');
+
+            if (!fullName || !bio || !education || !experience) {
+                showStatus(statusDiv, '모든 필드를 입력해주세요.', 'error');
+                return;
+            }
+
+            showStatus(statusDiv, '프로필 수정 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_GATEWAY_URL}/api/users/me/profile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        bio: bio,
+                        profile_image_url: 'https://example.com/profile.jpg',
+                        education: education,
+                        experience: experience,
+                        portfolio_url: 'https://example.com/portfolio'
+                    })
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 프로필 수정 성공', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                } else {
+                    showStatus(statusDiv, `❌ 프로필 수정 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 7. 사용자 검색
+        async function searchUser() {
+            const email = document.getElementById('searchEmail').value;
+            const statusDiv = document.getElementById('searchStatus');
+            const responseDiv = document.getElementById('searchResponse');
+
+            if (!email) {
+                showStatus(statusDiv, '검색할 이메일을 입력해주세요.', 'error');
+                return;
+            }
+
+            showStatus(statusDiv, '사용자 검색 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_GATEWAY_URL}/api/users/search?email=${encodeURIComponent(email)}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const result = await response.text();
+                
+                if (response.ok) {
+                    showStatus(statusDiv, '✅ 사용자 검색 성공', 'success');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                } else {
+                    showStatus(statusDiv, `❌ 사용자 검색 실패: ${result}`, 'error');
+                    showResponse(responseDiv, `Status: ${response.status}\nResponse: ${result}`);
+                }
+            } catch (error) {
+                showStatus(statusDiv, `❌ 네트워크 오류: ${error.message}`, 'error');
+                showResponse(responseDiv, `Error: ${error.message}`);
+            }
+        }
+
+        // 8. 로그아웃
+        function logout() {
+            const statusDiv = document.getElementById('logoutStatus');
+            
+            // 쿠키 삭제
+            document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            
+            showStatus(statusDiv, '✅ 로그아웃 완료 (JWT 쿠키 삭제됨)', 'success');
+            checkAuthStatus(); // 인증 상태 업데이트
+            
+            // 폼 초기화
+            document.getElementById('signupUsername').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('fullName').value = '';
+            document.getElementById('bio').value = '';
+            document.getElementById('education').value = '';
+            document.getElementById('experience').value = '';
+            document.getElementById('searchEmail').value = '';
+        }
+
+        // 유틸리티 함수들
+        function showStatus(element, message, type) {
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+            element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showResponse(element, response) {
+            element.textContent = response;
+            element.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html> 

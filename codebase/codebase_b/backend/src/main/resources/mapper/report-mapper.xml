@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Report">
+
+    <resultMap id="ReportMap" type="report">
+        <result property="reportId" column="report_id" />
+        <result property="categoryId" column="category_id" />
+        <result property="categoryTitle" column="category_title" />
+        <result property="count" column="report_count" />
+    </resultMap>
+
+    <resultMap id="ReportDetailMap" type="reportDetail">
+        <result property="detailId" column="detail_id" />
+        <result property="reportId" column="report_id" />
+        <result property="memberId" column="member_id" />
+        <result property="reportDate" column="report_date" />
+    </resultMap>
+
+    <!-- 해당 게시글 신고가 없으면 추가, 있으면 count++ -->
+    <insert id="insertOrUpdateReport" parameterType="map">
+        INSERT INTO report_summary (category, category_id, report_count, completed)
+        VALUES (#{category}, #{categoryId}, 1, false)
+        ON DUPLICATE KEY UPDATE
+        report_count = report_count + 1;
+    </insert>
+
+    <!-- 신고할 때마다 신고 디테일 정보 저장 -->
+    <insert id="insertReportDetail" parameterType="map">
+        INSERT INTO report_details (report_id, member_id, content, report_date)
+        VALUES (
+            (SELECT report_id FROM report_summary WHERE category = #{category} AND category_id = #{categoryId}),
+                #{memberId}, #{content}, NOW()
+        );
+    </insert>
+
+    <!-- 전체 신고 리스트 띄우기 + 페이징 처리-->
+    <select id="selectAllReports" parameterType="map" resultType="report" resultMap="ReportMap">
+        select r.report_id, r.category, r.category_id,
+            IF(r.category = 0, project.title,
+               IF(r.category = 1, post.title,
+                  IF(r.category = 2, comments.content,
+                     IF(r.category = 3, review.title, '알 수 없음'))))
+            as category_title,
+            r.report_count, r.completed
+        from
+            report_summary r
+                left join project
+                          on r.category = 0 and r.category_id = project.id
+                left join post
+                          on r.category = 1 and r.category_id = post.id
+                left join comments
+                          on r.category = 2 and r.category_id = comments.id
+                left join review
+                          on r.category = 3 and r.category_id = review.id
+        order by report_count desc
+        limit #{limit} offset #{offset};
+    </select>
+
+    <!-- 전체 신고 개수 -->
+    <select id="countAllReports" resultType="int">
+        select count(*) from report_summary;
+    </select>
+
+    <!-- 카테고리별 신고 리스트 띄우기 -->
+    <select id="selectReportsByCategory" parameterType="map" resultType="report" resultMap="ReportMap">
+        select r.report_id, r.category, r.category_id,
+            IF(r.category = 0, project.title,
+                IF(r.category = 1, post.title,
+                    IF(r.category = 2, comments.content,
+                        IF(r.category = 3, review.title, '알 수 없음'))))
+            as category_title,
+            r.report_count, r.completed
+        from
+            report_summary r
+                left join project
+                          on r.category = 0 and r.category_id = project.id
+                left join post
+                          on r.category = 1 and r.category_id = post.id
+                left join comments
+                          on r.category = 2 and r.category_id = comments.id
+                left join review
+                          on r.category = 3 and r.category_id = review.id
+        where r.category = #{category}
+        order by r.report_count desc
+        limit #{limit} offset #{offset};
+    </select>
+
+    <!-- 카테고리별 신고 개수 -->
+    <select id="countReportsByCategory" parameterType="int" resultType="int">
+        select count(*) from report_summary
+        where category = #{category};
+    </select>
+
+    <!-- 신고 디테일 띄우기 -->
+    <select id="selectReportDetails" parameterType="int" resultType="reportDetail" resultMap="ReportDetailMap">
+        select * from report_details
+        where report_id = #{reportId};
+    </select>
+
+    <!-- 신고 처리 -->
+    <update id="processReport" parameterType="int">
+        update report_summary
+        set completed = true
+        where report_id = #{reportId};
+    </update>
+
+    <!-- 회원 탈퇴 시 신고 member null 처리-->
+    <update id="deleteMemberId" parameterType="int">
+        update report_details
+        set member_id = null
+        where member_id = #{memberId}
+    </update>
+
+</mapper>

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: contest-service
+  
+  datasource:
+    url: jdbc:postgresql://contestapp-postgres:5432/contestapp
+    username: user
+    password: a1234
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: contest_service
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8083
+
+logging:
+  level:
+    com.contestapp.contestservice: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE 

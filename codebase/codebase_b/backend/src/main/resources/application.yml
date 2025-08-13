@@ -1,0 +1,84 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  config:
+    import: optional:.env[.properties]
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/localdB?serverTimezone=Asia/Seoul
+    username: root
+    password: 11111111
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#  datasource: # Supabase용 설정 (주석 처리)
+#    url: ${SUPABASE_DB_ENDPOINT}
+#    username: ${SUPABASE_DB_USERNAME}
+#    password: ${SUPABASE_DB_PASSWORD}
+#    driver-class-name: org.postgresql.Driver
+  
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_API_KEY}
+            client-secret: ${KAKAO_SECRET_KEY}
+            scope:
+              - account_email
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+
+          google:
+            client-id: ${GOOGLE_API_KEY}
+            client-secret: ${GOOGLE_SECRET_KEY}
+            scope:
+              - email
+              - profile
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_MAIL_ID}
+    password: ${GOOGLE_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
+
+logging:
+  level:
+    org.mybatis: DEBUG
+    org.apache.ibatis: DEBUG
+
+frontend:
+  url: http://localhost:5173
+
+aws:
+  s3:
+   bucket: ${AWS_S3_BUCKET_NAME}
+   stack.auto: false
+   region.static: ap-northeast-2
+   credentials:
+    accessKey: ${AWS_S3_ACCESS_KEY}
+    secretKey: ${AWS_S3_SECRET_KEY}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codebase.backend.review.mapper.ReviewMapper">
+
+    <!-- 리뷰 생성 -->
+    <insert id="insertReview" parameterType="com.codebase.backend.review.dto.Review">
+        INSERT INTO review (title, content, createdDate, views, author, pjtId, category) VALUES (#{title}, #{content}, CURRENT_TIMESTAMP, 0, #{author}, #{pjtId}, #{category})
+    </insert>
+
+    <!-- 모든 리뷰 조회 -->
+    <select id="selectAllReviews" resultType="com.codebase.backend.review.dto.Review">
+        SELECT 
+        	r.id, r.title, r.content, r.createdDate, r.views, r.likes, r.dislikes, r.author, r.pjtId, r.category, p.pjtname AS pjtName, p.pjtimg AS pjtImg
+    	FROM review r
+    	JOIN projectteam p ON r.pjtId = p.pjt_id
+    </select>
+
+    <!-- 특정 리뷰 조회 -->
+    <select id="selectReviewById" parameterType="int" resultType="com.codebase.backend.review.dto.Review">
+        SELECT 
+        	r.id, r.title, r.content, r.createdDate, r.views, r.likes, r.dislikes, r.author, r.pjtId, r.category, p.pjtname AS pjtName, p.pjtimg AS pjtImg
+    	FROM review r
+    	JOIN projectteam p ON r.pjtId = p.pjt_id
+    	WHERE id = #{id}
+    </select>
+    
+    <!-- 리뷰 조회수 -->
+    <update id="increaseViews" parameterType="int">
+        UPDATE review SET views = views + 1 WHERE id = #{id}
+    </update>
+    
+    <!-- 리뷰 삭제 -->
+    <delete id="deleteReview" parameterType="int">
+    	DELETE FROM review WHERE id = #{id}
+    </delete>
+    
+    <!-- 리뷰 수정 -->
+    <update id="updateReview" parameterType="com.codebase.backend.review.dto.Review">
+    	UPDATE review SET title = #{title}, content = #{content}, createdDate = NOW() WHERE id = #{id}
+    </update>
+    
+    <!-- 리뷰 좋아요 증가 -->
+    <update id="increaseLikes" parameterType="int">
+    	UPDATE review SET likes = likes + 1 WHERE id = #{id}
+    </update>
+    
+    <!-- 리뷰 싫어요 증가 -->
+    <update id="increaseDislikes" parameterType="int">
+    	UPDATE review SET dislikes = dislikes + 1 WHERE id = #{id}
+    </update>
+
+    <!-- 리뷰 좋아요 감소 -->
+	<update id="decreasetLikes" parameterType="int">
+	    UPDATE review SET likes = likes - 1 WHERE id = #{id}
+	</update>
+
+	<!-- 리뷰 싫어요 감소 -->
+	<update id="decreaseDislikes" parameterType="int">
+	    UPDATE review SET dislikes = dislikes - 1 WHERE id = #{id}
+	</update>
+
+
+<!--  author로 리뷰 찾기  -->
+    <select id="findByAuthor" parameterType="string" resultType="com.codebase.backend.review.dto.Review">
+        SELECT *
+        FROM review
+        where author=#{name}
+    </select>
+</mapper>

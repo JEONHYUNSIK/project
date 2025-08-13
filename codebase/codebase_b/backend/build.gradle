@@ -1,0 +1,88 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.mysite'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot 기본 기능 및 웹 관련 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Mybatis를 사용하므로, spring-boot-starter-data-jdbc는 제거합니다.
+    // 만약 주석을 제거하면, Mybatis와 충돌이 발생할 수 있습니다.
+    // implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+    // Thymeleaf 템플릿 엔진 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // Spring Security (보안) 관련 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // 메일 기능 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Mybatis 의존성 (JDBC 관련 기능 포함)
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+
+    // 데이터베이스 드라이버: MySQL 전용 드라이버를 사용합니다.
+    // MariaDB를 사용하신다면, 이 줄을 주석 처리하고 'org.mariadb.jdbc:mariadb-java-client'를 사용해야 합니다.
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Lombok (코드 자동 생성)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 개발 편의 기능 (DevTools)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // 테스트 지원 라이브러리
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Jackson (JSON 데이터 처리)
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    // 채팅 (WebSocket)
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // JWT (토큰 처리)
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // AWS S3 설정 (commons-logging 충돌 해결)
+    implementation ('com.amazonaws:aws-java-sdk-s3:1.12.770') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    // 데이터 검증
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

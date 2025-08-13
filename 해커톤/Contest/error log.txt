@@ -1,0 +1,106 @@
+[오전 11:33:38] 채팅 서비스 연결 시도 중... [오전 11:33:38] WebSocket 연결 성공 [오전 11:33:38] 수신: { "message": "WebSocket connection successful", "timestamp": "2025-07-25T02:33:38Z", "type": "connection_established", "user_id": "3a0e4351-fd3c-4ce4-8ff2-7da8e411b216" } [오전 11:33:38] 사용자 3a0e4351-fd3c-4ce4-8ff2-7da8e411b216로 연결 완료 [오전 11:33:39] 전송: {"type":"join_room","room_id":"asdf","timestamp":"2025-07-25T02:33:39.452Z"} [오전 11:33:39] 수신: { "room_id": "asdf", "timestamp": "2025-07-25T02:33:39Z", "type": "room_joined", "user_id": "3a0e4351-fd3c-4ce4-8ff2-7da8e411b216" } [오전 11:33:39] 📍 현재 채팅방: asdf [오전 11:33:39] ✅ 채팅방 asdf에 입장했습니다 [오전 11:33:41] 토큰 갱신 중... [오전 11:33:41] 토큰 갱신 에러: Failed to fetch
+
+2025-07-25 11:33:38.603 | 
+2025-07-25 11:33:38.603 | === WEBSOCKET HANDLER REQUEST ===
+2025-07-25 11:33:38.603 | Method: <<"GET">>
+2025-07-25 11:33:38.603 | Path: <<"/chat">>
+2025-07-25 11:33:38.603 | Headers: #{<<"accept-encoding">> => <<"gzip, deflate, br, zstd">>,
+2025-07-25 11:33:38.603 |            <<"accept-language">> => <<"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7">>,
+2025-07-25 11:33:38.603 |            <<"cache-control">> => <<"no-cache">>,
+2025-07-25 11:33:38.603 |            <<"connection">> => <<"Upgrade">>,
+2025-07-25 11:33:38.603 |            <<"cookie">> =>
+2025-07-25 11:33:38.603 |                <<"auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiM2EwZTQzNTEtZmQzYy00Y2U0LThmZjItN2RhOGU0MTFiMjE2IiwidXNlcm5hbWUiOiJhc2RmIiwiaXNzIjoiYXV0aC1zZXJ2ZXIiLCJleHAiOjE3NTM0MTQ0MDAsImlhdCI6MTc1MzQxMDgwMH0.gq8wWBCQyn0BDOIlfIXnnggS8esw9YFaJ6Y9WOzayg0; refresh_token=5130cf904c08264bf282330027a60590bee147b4ef48f82c51ad4baa5989f100">>,
+2025-07-25 11:33:38.603 |            <<"host">> => <<"localhost:8085">>,
+2025-07-25 11:33:38.603 |            <<"origin">> => <<"http://localhost:3000">>,
+2025-07-25 11:33:38.603 |            <<"pragma">> => <<"no-cache">>,
+2025-07-25 11:33:38.603 |            <<"sec-websocket-extensions">> =>
+2025-07-25 11:33:38.603 |                <<"permessage-deflate; client_max_window_bits">>,
+2025-07-25 11:33:38.603 |            <<"sec-websocket-key">> => <<"sowM7fJQXW2Z1jCJEUAJmw==">>,
+2025-07-25 11:33:38.603 |            <<"sec-websocket-version">> => <<"13">>,
+2025-07-25 11:33:38.603 |            <<"upgrade">> => <<"websocket">>,
+2025-07-25 11:33:38.603 |            <<"user-agent">> =>
+2025-07-25 11:33:38.603 |                <<"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36">>}
+2025-07-25 11:33:38.603 | ==================================
+2025-07-25 11:33:38.603 | [DEBUG] WebSocket upgrade request received
+2025-07-25 11:33:38.603 | [DEBUG] Extracting token from cookies
+2025-07-25 11:33:38.603 | [DEBUG] Cookie list: [{<<"auth_token">>,
+2025-07-25 11:33:38.603 |                        <<"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiM2EwZTQzNTEtZmQzYy00Y2U0LThmZjItN2RhOGU0MTFiMjE2IiwidXNlcm5hbWUiOiJhc2RmIiwiaXNzIjoiYXV0aC1zZXJ2ZXIiLCJleHAiOjE3NTM0MTQ0MDAsImlhdCI6MTc1MzQxMDgwMH0.gq8wWBCQyn0BDOIlfIXnnggS8esw9YFaJ6Y9WOzayg0">>},
+2025-07-25 11:33:38.603 |                       {<<"refresh_token">>,
+2025-07-25 11:33:38.603 |                        <<"5130cf904c08264bf282330027a60590bee147b4ef48f82c51ad4baa5989f100">>}]
+2025-07-25 11:33:38.603 | [DEBUG] Token found successfully
+2025-07-25 11:33:38.603 | [DEBUG] Token extracted successfully for WebSocket
+2025-07-25 11:33:38.603 | [DEBUG] Validating JWT token
+2025-07-25 11:33:38.603 | [DEBUG] JWT secret loaded
+2025-07-25 11:33:38.603 | [DEBUG] JWT token decoded successfully. Claims: #{<<"exp">> => 1753414400,
+2025-07-25 11:33:38.603 |                                                   <<"iat">> => 1753410800,
+2025-07-25 11:33:38.603 |                                                   <<"iss">> =>
+2025-07-25 11:33:38.604 |                                                       <<"auth-server">>,
+2025-07-25 11:33:38.604 |                                                   <<"user_id">> =>
+2025-07-25 11:33:38.604 |                                                       <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>,
+2025-07-25 11:33:38.604 |                                                   <<"username">> =>
+2025-07-25 11:33:38.604 |                                                       <<"asdf">>}
+2025-07-25 11:33:38.604 | [DEBUG] Checking token expiry
+2025-07-25 11:33:38.604 | [DEBUG] Current time: 1753410818, Token expiry: 1753414400
+2025-07-25 11:33:38.604 | [DEBUG] Token not expired
+2025-07-25 11:33:38.604 | [DEBUG] Token validation successful for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.604 | [DEBUG] JWT validation successful for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.604 | [DEBUG] Verifying token in Redis
+2025-07-25 11:33:38.604 | [DEBUG] Redis key: token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiM2EwZTQzNTEtZmQzYy00Y2U0LThmZjItN2RhOGU0MTFiMjE2IiwidXNlcm5hbWUiOiJhc2RmIiwiaXNzIjoiYXV0aC1zZXJ2ZXIiLCJleHAiOjE3NTM0MTQ0MDAsImlhdCI6MTc1MzQxMDgwMH0.gq8wWBCQyn0BDOIlfIXnnggS8esw9YFaJ6Y9WOzayg0
+2025-07-25 11:33:38.605 | [DEBUG] Token found in Redis. Data: [<<"user_id">>,
+2025-07-25 11:33:38.605 |                                      <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>,
+2025-07-25 11:33:38.605 |                                      <<"username">>,<<"asdf">>,<<"email">>,
+2025-07-25 11:33:38.605 |                                      <<"asdf@asdf.com">>,<<"issued_at">>,
+2025-07-25 11:33:38.605 |                                      <<"1753410800">>,<<"expires_at">>,
+2025-07-25 11:33:38.605 |                                      <<"1753497200">>,<<"is_active">>,
+2025-07-25 11:33:38.605 |                                      <<"true">>]
+2025-07-25 11:33:38.605 | [DEBUG] Token is active for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.605 | [DEBUG] Redis token verification successful
+2025-07-25 11:33:38.605 | [DEBUG] WebSocket authentication successful for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.605 | [2025-07-25T02:33:38.604Z] [INFO] [<0.203.0>] [3a0e4351-fd3c-4ce4-8ff2-7da8e411b216] - WebSocket authentication successful
+2025-07-25 11:33:38.605 | [INFO] Session registered for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.605 | [INFO] Removed 1 sessions due to WebSocket process termination
+2025-07-25 11:33:38.605 | [DEBUG] WebSocket connection established for user: <<"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216">>
+2025-07-25 11:33:38.605 | [2025-07-25T02:33:38.605Z] [INFO] [<0.202.0>] [3a0e4351-fd3c-4ce4-8ff2-7da8e411b216] - WebSocket connection established
+2025-07-25 11:33:38.605 | 
+2025-07-25 11:33:38.605 | === OUTGOING MESSAGE ENCODING ===
+2025-07-25 11:33:38.605 | [ENCODING-OUT] Message type: <<"{\"message\":\"WebSocket connection successful\",\"timestamp\":\"2025-07-25T02:33:38Z\",\"type\":\"connection_established\",\"user_id\":\"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216\"}">>
+2025-07-25 11:33:38.605 | [ENCODING-OUT] Message size: 161 bytes
+2025-07-25 11:33:38.605 | [ENCODING-OUT] Message bytes: "{\"message\":\"WebSocket connection successful\",\"timestamp\":\"2025-07-25T02:33:38Z\",\"type\":\"connection_established\",\"user_id\":\"3a0e4351-fd3c-4ce4-8ff2-7da8e411b216\"}"
+2025-07-25 11:33:38.605 | [ENCODING-OUT] \x{2713} Outgoing message is valid UTF-8
+2025-07-25 11:33:38.605 | =================================
+2025-07-25 11:33:39.369 | 
+2025-07-25 11:33:39.369 | === MESSAGE ENCODING ANALYSIS ===
+2025-07-25 11:33:39.369 | [DEBUG] Raw message type: <<"{\"type\":\"join_room\",\"room_id\":\"asdf\",\"timestamp\":\"2025-07-25T02:33:39.452Z\"}">>
+2025-07-25 11:33:39.369 | [DEBUG] Raw message size: 76 bytes
+2025-07-25 11:33:39.369 | [DEBUG] Raw message bytes: "{\"type\":\"join_room\",\"room_id\":\"asdf\",\"timestamp\":\"2025-07-25T02:33:39.452Z\"}"
+2025-07-25 11:33:39.369 | [ENCODING] Analyzing message encoding...
+2025-07-25 11:33:39.369 | [ENCODING] \x{2713} Message is valid UTF-8
+2025-07-25 11:33:39.369 | [ENCODING] \x{2713} Message can be interpreted as Latin-1
+2025-07-25 11:33:39.369 | [ENCODING] Latin-1 to UTF-8: {"type":"join_room","room_id":"asdf","timestamp":"2025-07-25T02:33:39.452Z"}
+2025-07-25 11:33:39.369 | [ENCODING] No Korean characters detected
+2025-07-25 11:33:39.369 | [ENCODING] Analysis complete.
+2025-07-25 11:33:39.369 | ================================
+2025-07-25 11:33:39.369 | [DEBUG] Message is already valid UTF-8
+2025-07-25 11:33:39.369 | [DEBUG] WebSocket message received from user 3a0e4351-fd3c-4ce4-8ff2-7da8e411b216: {"type":"join_room","room_id":"asdf","timestamp":"2025-07-25T02:33:39.452Z"}
+2025-07-25 11:33:39.369 | [DEBUG] Final message bytes: "{\"type\":\"join_room\",\"room_id\":\"asdf\",\"timestamp\":\"2025-07-25T02:33:39.452Z\"}"
+2025-07-25 11:33:39.369 | [DEBUG] Received message type: <<"join_room">>
+2025-07-25 11:33:39.369 | [2025-07-25T02:33:39.369Z] [INFO] [<0.202.0>] [3a0e4351-fd3c-4ce4-8ff2-7da8e411b216] - Received message type: <<"join_room">>
+2025-07-25 11:33:39.369 | [DEBUG] User 3a0e4351-fd3c-4ce4-8ff2-7da8e411b216 joining room asdf
+2025-07-25 11:33:39.369 | [2025-07-25T02:33:39.369Z] [INFO] [<0.202.0>] [3a0e4351-fd3c-4ce4-8ff2-7da8e411b216] [asdf] - Joining room
+2025-07-25 11:33:39.369 | [2025-07-25T02:33:39.369Z] [INFO] [<0.179.0>] [3a0e4351-fd3c-4ce4-8ff2-7da8e411b216] [asdf] - User joined room (state: idle -> active)
+2025-07-25 11:33:41.535 | [INFO] Token refresh request received
+2025-07-25 11:33:41.535 | [INFO] Attempting token refresh with cookies: auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiM2EwZTQzNTEtZmQzYy00Y2U0LThmZjItN2RhOGU0MTFiMjE2IiwidXNlcm5hbWUiOiJhc2RmIiwiaXNzIjoiYXV0aC1zZXJ2ZXIiLCJleHAiOjE3NTM0MTQ0MDAsImlhdCI6MTc1MzQxMDgwMH0.gq8wWBCQyn0BDOIlfIXnnggS8esw9YFaJ6Y9WOzayg0; refresh_token=5130cf904c08264bf282330027a60590bee147b4ef48f82c51ad4baa5989f100
+2025-07-25 11:33:41.539 | [INFO] Token refresh successful
+2025-07-25 11:33:41.539 | [INFO] Token refresh successful
+2025-07-25 11:33:41.539 | [DEBUG] Setting cookie: refresh_token=d10f06c27f082735d9637373187c0b1977e382d06d6f0d1f794840b295d95b5e with opts: #{path =>
+2025-07-25 11:33:41.539 |                                                                                                                         <<"/">>,
+2025-07-25 11:33:41.539 |                                                                                                                     max_age =>
+2025-07-25 11:33:41.539 |                                                                                                                         15552000,
+2025-07-25 11:33:41.539 |                                                                                                                     http_only =>
+2025-07-25 11:33:41.539 |                                                                                                                         true}
+2025-07-25 11:33:41.539 | [DEBUG] Setting cookie: auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiM2EwZTQzNTEtZmQzYy00Y2U0LThmZjItN2RhOGU0MTFiMjE2IiwidXNlcm5hbWUiOiJhc2RmIiwiaXNzIjoiYXV0aC1zZXJ2ZXIiLCJleHAiOjE3NTM0MTQ0MjEsImlhdCI6MTc1MzQxMDgyMX0.Ogrw94jmBmxpKOB30MCD4YDoBmTEJWd9VIBsIay8OQo with opts: #{path =>
+2025-07-25 11:33:41.539 |                                                                                                                                                                                                                                                                                                          <<"/">>,
+2025-07-25 11:33:41.539 |                                                                                                                                                                                                                                                                                                      max_age =>
+2025-07-25 11:33:41.539 |                                                                                                                                                                                                                                                                                                          3600,
+2025-07-25 11:33:41.539 |                                                                                                                                                                                                                                                                                                      http_only =>
+2025-07-25 11:33:41.539 |                                                                                                                                                                                                                                                                                                          true}

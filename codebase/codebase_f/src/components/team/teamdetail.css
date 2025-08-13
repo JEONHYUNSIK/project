@@ -1,0 +1,114 @@
+.app-container {
+    font-family: Arial, sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+  }
+  
+  .header nav a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .main-content {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .project-details {
+    flex: 3;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .project-description {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .project-photo {
+    flex: 1;
+    height: 200px;
+    background-color: #ddd;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 이미지가 넘칠 경우 숨김 */
+  }
+  
+  .project-photo img {
+    max-width: 100%; /* 가로 크기를 부모 컨테이너에 맞춤 */
+    max-height: 100%; /* 세로 크기를 부모 컨테이너에 맞춤 */
+    object-fit: contain; /* 이미지의 비율을 유지하면서 컨테이너에 맞춤 */
+  }
+  
+  
+  .hashtags {
+    margin-top: 10px;
+  }
+  
+  .project-content {
+    flex: 2;
+  }
+  
+  .team-list {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f1f1f1;
+  }
+  
+  .team-list h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .team-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .team-list li {
+    margin-bottom: 5px;
+  }
+  
+  .category-tag {
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+  
+  .card-body {
+    padding: 1rem;  /* 기본 패딩값 줄임 */
+  }
+  
+  .team-members .card {
+    margin-bottom: 0.75rem;  /* 카드 간격 줄임 */
+  }
+  
+  .team-members .card-body h5 {
+    margin-bottom: 0.5rem;  /* 제목 아래 여백 줄임 */
+    font-size: 1rem;  /* 제목 크기 줄임 */
+  }
+  
+  .team-members .badge {
+    font-size: 0.8rem;  /* 뱃지 텍스트 크기 줄임 */
+    padding: 0.3rem 0.5rem;  /* 뱃지 패딩 줄임 */
+  }
+  
+  .team-members .text-muted {
+    font-size: 0.85rem;  /* 상태 텍스트 크기 줄임 */
+    margin-top: 0.5rem;  /* 상태 텍스트 위 여백 추가 */
+  }
+  

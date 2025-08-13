@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScyllaDB 연결 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+        .error {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ ScyllaDB 연결 테스트</h1>
+        <p>ContestApp 채팅 서비스의 ScyllaDB 연결을 테스트합니다.</p>
+        
+        <h2>1. 연결 테스트 및 데이터 조회</h2>
+        <button onclick="testConnection()">ScyllaDB 연결 테스트 & 메시지 조회</button>
+        <div id="connectionResult" class="result" style="display: none;"></div>
+        
+        <h2>2. 테스트 메시지 삽입</h2>
+        <div class="input-group">
+            <label for="userId">사용자 ID:</label>
+            <input type="text" id="userId" placeholder="예: user123" value="testuser">
+        </div>
+        <div class="input-group">
+            <label for="messageContent">메시지 내용:</label>
+            <textarea id="messageContent" placeholder="테스트 메시지를 입력하세요...">안녕하세요! ScyllaDB 테스트 메시지입니다. 🚀</textarea>
+        </div>
+        <button onclick="insertMessage()">메시지 삽입</button>
+        <div id="insertResult" class="result" style="display: none;"></div>
+        
+        <h2>3. 서비스 정보</h2>
+        <p><strong>테스트 엔드포인트:</strong> http://localhost:8085/scylla-test</p>
+        <p><strong>지원 메서드:</strong></p>
+        <ul>
+            <li><code>GET</code> - 연결 테스트 및 저장된 메시지 조회</li>
+            <li><code>POST</code> - 새 테스트 메시지 삽입</li>
+        </ul>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8085';
+        
+        function showResult(elementId, content, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `result ${isError ? 'error' : 'success'}`;
+            element.textContent = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+        }
+        
+        async function testConnection() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = '테스트 중...';
+            
+            try {
+                showResult('connectionResult', '연결 테스트 중...', false);
+                
+                const response = await fetch(`${API_BASE_URL}/scylla-test`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    let resultText = `✅ 연결 테스트 성공!\n\n`;
+                    resultText += `🔗 연결 상태: ${result.results.connection_test.connection}\n`;
+                    resultText += `📨 메시지 개수: ${result.results.messages_query.count || 0}개\n\n`;
+                    
+                    if (result.results.messages_query.messages && result.results.messages_query.messages.length > 0) {
+                        resultText += `💬 저장된 메시지들:\n`;
+                        result.results.messages_query.messages.forEach((msg, index) => {
+                            resultText += `\n${index + 1}. [${msg.user_id}] ${msg.content}\n`;
+                            resultText += `   ID: ${msg.id}\n`;
+                            resultText += `   시간: ${new Date(msg.created_at).toLocaleString()}\n`;
+                        });
+                    } else {
+                        resultText += `📭 저장된 메시지가 없습니다.`;
+                    }
+                    
+                    showResult('connectionResult', resultText, false);
+                } else {
+                    showResult('connectionResult', `❌ 연결 테스트 실패:\n${JSON.stringify(result, null, 2)}`, true);
+                }
+            } catch (error) {
+                showResult('connectionResult', `❌ 연결 오류: ${error.message}`, true);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'ScyllaDB 연결 테스트 & 메시지 조회';
+            }
+        }
+        
+        async function insertMessage() {
+            const button = event.target;
+            const userId = document.getElementById('userId').value.trim();
+            const content = document.getElementById('messageContent').value.trim();
+            
+            if (!userId || !content) {
+                showResult('insertResult', '❌ 사용자 ID와 메시지 내용을 모두 입력해주세요.', true);
+                return;
+            }
+            
+            button.disabled = true;
+            button.textContent = '삽입 중...';
+            
+            try {
+                showResult('insertResult', '메시지 삽입 중...', false);
+                
+                const requestData = {
+                    user_id: userId,
+                    content: content,
+                    created_at: Date.now()
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/scylla-test`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    let resultText = `✅ 메시지 삽입 성공!\n\n`;
+                    resultText += `👤 사용자: ${result.data.user_id}\n`;
+                    resultText += `💬 내용: ${result.data.content}\n`;
+                    resultText += `⏰ 시간: ${new Date(result.data.created_at).toLocaleString()}\n\n`;
+                    resultText += `이제 "연결 테스트 & 메시지 조회" 버튼을 눌러서 저장된 메시지를 확인해보세요!`;
+                    
+                    showResult('insertResult', resultText, false);
+                    
+                    // 입력 필드 초기화
+                    document.getElementById('messageContent').value = '안녕하세요! ScyllaDB 테스트 메시지입니다. 🚀';
+                } else {
+                    showResult('insertResult', `❌ 메시지 삽입 실패:\n${JSON.stringify(result, null, 2)}`, true);
+                }
+            } catch (error) {
+                showResult('insertResult', `❌ 삽입 오류: ${error.message}`, true);
+            } finally {
+                button.disabled = false;
+                button.textContent = '메시지 삽입';
+            }
+        }
+        
+        // 페이지 로드 시 자동으로 연결 테스트
+        window.addEventListener('load', function() {
+            console.log('ScyllaDB 테스트 페이지가 로드되었습니다.');
+            console.log('테스트 엔드포인트:', `${API_BASE_URL}/scylla-test`);
+        });
+    </script>
+</body>
+</html>
